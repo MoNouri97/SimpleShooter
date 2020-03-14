@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-	public float speed = 10;
+	public float speed;
+	Rigidbody rb;
 
-    public void SetSpeed(float speed){
+	private void Start()
+	{
+		rb = GetComponent<Rigidbody>();
+		rb.velocity = transform.forward * speed;
+
+	}
+	public void SetSpeed(float speed)
+	{
 		this.speed = speed;
 	}
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-		transform.Translate(Vector3.forward * Time.deltaTime * speed);
+	private void OnTriggerEnter(Collider other)
+	{
+
+		Destroy(gameObject);
+		IDamageable hit = other.GetComponent<IDamageable>();
+		if (hit != null)
+		{
+			Debug.Log("enemy");
+		}
 	}
 }
