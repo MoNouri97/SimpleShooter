@@ -6,17 +6,18 @@ public class MapGenerator : MonoBehaviour
 {
 	public Vector2 mapSize;
 	public Transform tilePrefab;
+	public float tileSize;
 	public Transform obstaclePrefab;
 	[Range(0, 1)] public float outlinePercent;
 	[Range(0, 1)] public float obstaclePercent = .1f;
-
+	public bool accessibleMap = false;
 	Coord mapCenter;
 	List<Coord> tilesCoords;
 	Queue<Coord> shuffledCoords;
 	public int seed;
 	void Start()
 	{
-		GenerateMap();
+		//GenerateMap();
 	}
 	public void GenerateMap()
 	{
@@ -45,7 +46,7 @@ public class MapGenerator : MonoBehaviour
 				//instantiate
 				tilePos = CoordToPosition(x, y);
 				Transform newTile = Instantiate(tilePrefab, tilePos, Quaternion.Euler(90, 0, 0)) as Transform;
-				newTile.localScale = Vector3.one * (1 - outlinePercent);
+				newTile.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
 				newTile.parent = mapHolder;
 			}
 		}
@@ -53,13 +54,27 @@ public class MapGenerator : MonoBehaviour
 		// Creating Random Obstacles
 		shuffledCoords = new Queue<Coord>(Utils.ShuffleArray(tilesCoords.ToArray(), seed));
 		int obstacleCount = (int)(mapSize.x * mapSize.y * obstaclePercent);
-		bool[,] tileIsObstacle = new bool[(int)mapSize.x, (int)mapSize.y];
+		int currentObstacleCount = 0;
+		bool[,] obstacleMap = new bool[(int)mapSize.x, (int)mapSize.y];
 		for (int i = 0; i < obstacleCount; i++)
 		{
 			Coord randCoord = GetRandomCoord();
-			Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
-			Transform obstacle = Instantiate(obstaclePrefab, position + Vector3.up * .5f, Quaternion.identity) as Transform;
-			obstacle.parent = mapHolder;
+			obstacleMap[randCoord.x, randCoord.y] = true;
+			currentObstacleCount++;
+			if (randCoord != mapCenter && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
+			{
+				Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
+				Transform obstacle = Instantiate(obstaclePrefab, position + Vector3.up * .5f * tileSize, Quaternion.identity) as Transform;
+				obstacle.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
+
+				obstacle.parent = mapHolder;
+			}
+			else
+			{
+				obstacleMap[randCoord.x, randCoord.y] = false;
+				currentObstacleCount--;
+
+			}
 		}
 
 	}
@@ -70,7 +85,7 @@ public class MapGenerator : MonoBehaviour
 			-mapSize.x / 2 + 0.5f + x,
 			 0,
 			 -mapSize.y / 2 + 0.5f + y
-		);
+		) * tileSize;
 	}
 
 	public Coord GetRandomCoord()
@@ -80,20 +95,76 @@ public class MapGenerator : MonoBehaviour
 		return randCoord;
 	}
 
-	public bool MapIsFullyAccesible()
+	public bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount)
 	{
+		if (!accessibleMap) return true;
 
-		return true;
+		//checked tiles
+		bool[,] flags = new bool[obstacleMap.GetLength(0), obstacleMap.GetLength(1)];
+		int accessibleTileCount = 1;
+		int targetAccessibleCount = (int)(mapSize.x * mapSize.y) - currentObstacleCount;
+
+		Queue<Coord> queue = new Queue<Coord>();
+		queue.Enqueue(mapCenter);
+		flags[mapCenter.x, mapCenter.y] = true;
+		while (queue.Count > 0)
+		{
+
+			Coord tile = queue.Dequeue();
+			for (int x = -1; x <= 1; x++)
+			{
+				for (int y = -1; y <= 1; y++)
+				{
+					int neighborX = tile.x + x;
+					int neighborY = tile.y + y;
+
+					// only vertical and horizontal neighbor 
+					if (x != 0 & y != 0) continue;
+					// outside of bounds
+					if (neighborX < 0 || neighborX >= obstacleMap.GetLength(0) ||
+							neighborY < 0 || neighborY >= obstacleMap.GetLength(1))
+					{
+						continue;
+					}
+					// already checked or obstacle
+					if (flags[neighborX, neighborY] || obstacleMap[neighborX, neighborY]) continue;
+
+					flags[neighborX, neighborY] = true;
+					queue.Enqueue(new Coord(neighborX, neighborY));
+					accessibleTileCount++;
+				}
+			}
+		}
+
+
+		return accessibleTileCount == targetAccessibleCount;
 	}
 	public struct Coord
 	{
 		public int x;
 		public int y;
 
+		public static bool operator ==(Coord c1, Coord c2) => c1.x == c2.x && c1.y == c2.y;
+		public static bool operator !=(Coord c1, Coord c2) => !(c1 == c2);
 		public Coord(int x, int y)
 		{
 			this.x = x;
 			this.y = y;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return base.Equals(obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return base.ToString();
 		}
 	}
 
