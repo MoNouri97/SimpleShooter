@@ -19,13 +19,18 @@ public class Projectile : MonoBehaviour
 		this.speed = speed;
 	}
 
+	private void OnTriggerEnter(Collider other)
+	{
+		Destroy(gameObject);
+		IDamageable hit = other.GetComponent<IDamageable>();
+		if (hit != null)
+		{
+			hit.takeDamage(damage);
+		}
+	}
 	private void OnCollisionEnter(Collision other)
 	{
 		Destroy(gameObject);
-		IDamageable hit = other.collider.GetComponent<IDamageable>();
-		if (hit != null)
-		{
-			hit.takeHit(damage, other.GetContact(0));
-		}
+
 	}
 }

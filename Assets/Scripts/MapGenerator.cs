@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-	public Vector2 mapSize;
+	[Header("Prefabs")]
 	public Transform tilePrefab;
-	public float tileSize;
 	public Transform obstaclePrefab;
+	public Transform navMeshFloor;
+	public Transform navMeshMask;
+
+	public Map[] maps;
+	public int mapIndex;
+	[Header("Variables")]
+	public Vector2 maxMapSize;
+	public float tileSize;
 	[Range(0, 1)] public float outlinePercent;
-	[Range(0, 1)] public float obstaclePercent = .1f;
 	public bool accessibleMap = false;
-	Coord mapCenter;
-	List<Coord> tilesCoords;
 	Queue<Coord> shuffledCoords;
-	public int seed;
+	Queue<Coord> shuffledOpenCoords;
+
+	Transform[,] tileMap;
+	Map currentMap;
 	void Start()
 	{
-		//GenerateMap();
+		GenerateMap();
 	}
 	public void GenerateMap()
 	{
-		mapCenter = new Coord((int)mapSize.x / 2, (int)mapSize.y / 2);
-		tilesCoords = new List<Coord>();
-
-
+		currentMap = maps[mapIndex];
+		System.Random rng = new System.Random(currentMap.seed);
+		#region Init*/
+		List<Coord> tilesCoords = new List<Coord>();
+		tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
 		// geting the Map object & Clearing Previous obstacles
 		string holderName = "GeneratedMap";
 		Transform mapHolder = transform.Find(holderName);
@@ -34,40 +42,61 @@ public class MapGenerator : MonoBehaviour
 		}
 		mapHolder = new GameObject(holderName).transform;
 		mapHolder.parent = transform;
+		#endregion
 
 		// Creating Tiles
+		#region  Creating Tiles
 		Vector3 tilePos = Vector3.zero;
-		for (int x = 0; x < mapSize.x; x++)
+		for (int x = 0; x < currentMap.mapSize.x; x++)
 		{
-			for (int y = 0; y < mapSize.y; y++)
+			for (int y = 0; y < currentMap.mapSize.y; y++)
 			{
 				//saving all coords
 				tilesCoords.Add(new Coord(x, y));
-				//instantiate
+				//spawn
 				tilePos = CoordToPosition(x, y);
 				Transform newTile = Instantiate(tilePrefab, tilePos, Quaternion.Euler(90, 0, 0)) as Transform;
 				newTile.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
 				newTile.parent = mapHolder;
+				//save tile
+				tileMap[x, y] = newTile;
 			}
 		}
+		#endregion
+
+		// after tilesCoords are saved
+		List<Coord> openCoords = new List<Coord>(tilesCoords);
+		shuffledCoords = new Queue<Coord>(Utils.ShuffleArray(tilesCoords.ToArray(), currentMap.seed));
 
 		// Creating Random Obstacles
-		shuffledCoords = new Queue<Coord>(Utils.ShuffleArray(tilesCoords.ToArray(), seed));
-		int obstacleCount = (int)(mapSize.x * mapSize.y * obstaclePercent);
+		#region Creating Random Obstacles
+
+		int obstacleCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y * currentMap.obstaclePercent);
 		int currentObstacleCount = 0;
-		bool[,] obstacleMap = new bool[(int)mapSize.x, (int)mapSize.y];
+		bool[,] obstacleMap = new bool[(int)currentMap.mapSize.x, (int)currentMap.mapSize.y];
+
 		for (int i = 0; i < obstacleCount; i++)
 		{
 			Coord randCoord = GetRandomCoord();
 			obstacleMap[randCoord.x, randCoord.y] = true;
 			currentObstacleCount++;
-			if (randCoord != mapCenter && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
+			if (randCoord != currentMap.mapCenter && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
 			{
+				float obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)rng.NextDouble());
 				Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
-				Transform obstacle = Instantiate(obstaclePrefab, position + Vector3.up * .5f * tileSize, Quaternion.identity) as Transform;
-				obstacle.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
-
+				Transform obstacle = Instantiate(obstaclePrefab, position + Vector3.up * obstacleHeight / 2 * tileSize, Quaternion.identity) as Transform;
 				obstacle.parent = mapHolder;
+				obstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
+
+				Renderer obstacleRenderer = obstacle.GetComponent<Renderer>();
+				Material obstacleMat = new Material(obstacleRenderer.sharedMaterial);
+				float colorPercent = randCoord.y / (float)currentMap.mapSize.y;
+				obstacleMat.color = Color.Lerp(currentMap.fgColor, currentMap.bgColor, colorPercent);
+				obstacleRenderer.sharedMaterial = obstacleMat;
+
+				openCoords.Remove(randCoord);
+
+
 			}
 			else
 			{
@@ -76,15 +105,41 @@ public class MapGenerator : MonoBehaviour
 
 			}
 		}
+		#endregion
+
+		shuffledOpenCoords = new Queue<Coord>(Utils.ShuffleArray(openCoords.ToArray(), currentMap.seed));
+
+		// NavMesh
+		#region NavMesh*/
+		navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y);
+		// LeftMask
+		Transform maskLeft = Instantiate(navMeshMask, Vector3.left * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
+		maskLeft.parent = mapHolder;
+		maskLeft.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, 1, currentMap.mapSize.y) * tileSize;
+		// RightMask
+		Transform maskRight = Instantiate(navMeshMask, Vector3.right * (currentMap.mapSize.x + maxMapSize.x) / 4 * tileSize, Quaternion.identity) as Transform;
+		maskRight.parent = mapHolder;
+		maskRight.localScale = new Vector3((maxMapSize.x - currentMap.mapSize.x) / 2f, 1, currentMap.mapSize.y) * tileSize;
+		// TopMask
+		Transform maskTop = Instantiate(navMeshMask, Vector3.forward * (currentMap.mapSize.y + maxMapSize.y) / 4 * tileSize, Quaternion.identity) as Transform;
+		maskTop.parent = mapHolder;
+		maskTop.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
+		// BottomMask
+		Transform BottomMask = Instantiate(navMeshMask, Vector3.back * (currentMap.mapSize.y + maxMapSize.y) / 4 * tileSize, Quaternion.identity) as Transform;
+		BottomMask.parent = mapHolder;
+		BottomMask.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
+
+
+		#endregion
 
 	}
 
 	private Vector3 CoordToPosition(int x, int y)
 	{
 		return new Vector3(
-			-mapSize.x / 2 + 0.5f + x,
+			-currentMap.mapSize.x / 2f + 0.5f + x,
 			 0,
-			 -mapSize.y / 2 + 0.5f + y
+			 -currentMap.mapSize.y / 2f + 0.5f + y
 		) * tileSize;
 	}
 
@@ -94,6 +149,12 @@ public class MapGenerator : MonoBehaviour
 		shuffledCoords.Enqueue(randCoord);
 		return randCoord;
 	}
+	public Transform GetRandomOpenTile()
+	{
+		Coord randCoord = shuffledOpenCoords.Dequeue();
+		shuffledOpenCoords.Enqueue(randCoord);
+		return tileMap[randCoord.x, randCoord.y];
+	}
 
 	public bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount)
 	{
@@ -102,11 +163,11 @@ public class MapGenerator : MonoBehaviour
 		//checked tiles
 		bool[,] flags = new bool[obstacleMap.GetLength(0), obstacleMap.GetLength(1)];
 		int accessibleTileCount = 1;
-		int targetAccessibleCount = (int)(mapSize.x * mapSize.y) - currentObstacleCount;
+		int targetAccessibleCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y) - currentObstacleCount;
 
 		Queue<Coord> queue = new Queue<Coord>();
-		queue.Enqueue(mapCenter);
-		flags[mapCenter.x, mapCenter.y] = true;
+		queue.Enqueue(currentMap.mapCenter);
+		flags[currentMap.mapCenter.x, currentMap.mapCenter.y] = true;
 		while (queue.Count > 0)
 		{
 
@@ -139,6 +200,7 @@ public class MapGenerator : MonoBehaviour
 
 		return accessibleTileCount == targetAccessibleCount;
 	}
+	[System.Serializable]
 	public struct Coord
 	{
 		public int x;
@@ -168,4 +230,17 @@ public class MapGenerator : MonoBehaviour
 		}
 	}
 
+	[System.Serializable]
+	public class Map
+	{
+		public Coord mapSize;
+		[Range(0, 1)]
+		public float obstaclePercent;
+		public int seed;
+		public float minObstacleHeight;
+		public float maxObstacleHeight;
+		public Color bgColor;
+		public Color fgColor;
+		public Coord mapCenter { get => new Coord(mapSize.x / 2, mapSize.y / 2); }
+	}
 }

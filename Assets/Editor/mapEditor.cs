@@ -12,6 +12,10 @@ public class mapEditor : Editor
 	{
 		base.OnInspectorGUI();
 		MapGenerator map = (MapGenerator)target;
+		// if (base.DrawDefaultInspector())
+		// {
+		// 	map.GenerateMap();
+		// }
 
 		if (GUILayout.Toggle(realTime, "realTime"))
 		{
@@ -26,10 +30,10 @@ public class mapEditor : Editor
 		else
 		{
 			realTime = false;
-			if (GUILayout.Button("Generate"))
-			{
-				map.GenerateMap();
-			}
+		}
+		if (GUILayout.Button("Generate"))
+		{
+			map.GenerateMap();
 		}
 
 

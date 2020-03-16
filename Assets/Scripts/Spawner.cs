@@ -18,9 +18,11 @@ public class Spawner : MonoBehaviour
 		public int enemyCount;
 		public float timeBetweenSpawns;
 	}
+	MapGenerator map;
 
 	private void Start()
 	{
+		map = FindObjectOfType<MapGenerator>();
 		currentWave = -1;
 		NextWave();
 	}
@@ -28,14 +30,36 @@ public class Spawner : MonoBehaviour
 	{
 		if (enemiesToSpawn > 0 && Time.time > nextSpawnTime)
 		{
+
 			enemiesToSpawn--;
 			nextSpawnTime = Time.time + waves[currentWave].timeBetweenSpawns;
 
-			Enemy spawnedEnemy = Instantiate(enemy, Vector3.one, Quaternion.identity) as Enemy;
-			spawnedEnemy.OnDeath += OnEnemyDeath;
+			StartCoroutine(SpawnEnemy());
+
 		}
 	}
 
+	IEnumerator SpawnEnemy()
+	{
+		float spawnDelay = 1;
+		float flashSpeed = 4;
+		Transform randomTile = map.GetRandomOpenTile();
+		Material mat = randomTile.GetComponent<Renderer>().material;
+		Color initColor = mat.color;
+		Color flashColor = Color.red;
+		float timer = 0;
+		while (timer < spawnDelay)
+		{
+			Debug.Log(timer + " " + spawnDelay);
+
+			mat.color = Color.Lerp(initColor, flashColor, Mathf.PingPong(timer * flashSpeed, 1));
+			timer += Time.deltaTime;
+			yield return null;
+		}
+
+		Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;
+		spawnedEnemy.OnDeath += OnEnemyDeath;
+	}
 	void NextWave()
 	{
 		currentWave++;
