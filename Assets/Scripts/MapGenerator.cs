@@ -142,7 +142,14 @@ public class MapGenerator : MonoBehaviour
 			 -currentMap.mapSize.y / 2f + 0.5f + y
 		) * tileSize;
 	}
-
+	public Transform PositonToTile(Vector3 pos)
+	{
+		int x = Mathf.RoundToInt(pos.x / tileSize + (currentMap.mapSize.x - 1) / 2f);
+		int y = Mathf.RoundToInt(pos.z / tileSize + (currentMap.mapSize.y - 1) / 2f);
+		x = Mathf.Clamp(x, 0, tileMap.GetLength(0) - 1);
+		y = Mathf.Clamp(y, 0, tileMap.GetLength(1) - 1);
+		return tileMap[x, y];
+	}
 	public Coord GetRandomCoord()
 	{
 		Coord randCoord = shuffledCoords.Dequeue();
