@@ -24,11 +24,12 @@ public class Enemy : LivingEntity
 	{
 		base.Start();
 		pathfinder = GetComponent<NavMeshAgent>();
-		target = GameObject.FindGameObjectWithTag("Player").transform;
+		GameObject targetObject = GameObject.FindGameObjectWithTag("Player");
 
-		hasTarget = (target != null);
+		hasTarget = (targetObject != null);
 		if (!hasTarget) return;
 
+		target = targetObject.transform;
 		currentState = State.Chasing;
 		targetEntity = target.GetComponent<LivingEntity>();
 		targetEntity.OnDeath += OnTargetDeath;
@@ -111,7 +112,15 @@ public class Enemy : LivingEntity
 			}
 			yield return new WaitForSeconds(refreshRate);
 		}
+		pathfinder.destination = transform.position;
 
+	}
+
+
+	public override void takeHit(float damage, Vector3 hitPoint, Vector3 direction)
+	{
+
+		base.takeHit(damage, hitPoint, direction);
 	}
 
 }

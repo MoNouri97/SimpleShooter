@@ -24,7 +24,7 @@ public class mapEditor : Editor
 			if (time > nextUp)
 			{
 				nextUp = time + .1f;
-				map.GenerateMap();
+				map.GenerateMap(true);
 			}
 		}
 		else
@@ -33,7 +33,7 @@ public class mapEditor : Editor
 		}
 		if (GUILayout.Button("Generate"))
 		{
-			map.GenerateMap();
+			map.GenerateMap(true);
 		}
 
 

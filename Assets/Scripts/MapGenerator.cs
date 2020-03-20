@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+	#region Params
 	[Header("Prefabs")]
 	public Transform tilePrefab;
 	public Transform obstaclePrefab;
 	public Transform navMeshFloor;
 	public Transform navMeshMask;
+	public Transform floor; // the floor behind the tiles used for color and collision
 
 	public Map[] maps;
 	public int mapIndex;
@@ -17,6 +19,7 @@ public class MapGenerator : MonoBehaviour
 	public float tileSize;
 	[Range(0, 1)] public float outlinePercent;
 	public bool accessibleMap = false;
+	#endregion
 	Queue<Coord> shuffledCoords;
 	Queue<Coord> shuffledOpenCoords;
 
@@ -24,12 +27,19 @@ public class MapGenerator : MonoBehaviour
 	Map currentMap;
 	void Start()
 	{
+		FindObjectOfType<Spawner>().OnNewWave += OnNewWave;
+	}
+
+	void OnNewWave(int waveIndex)
+	{
+		mapIndex = waveIndex;
 		GenerateMap();
 	}
-	public void GenerateMap()
+	public void GenerateMap(bool fromEditor = false)
 	{
 		currentMap = maps[mapIndex];
 		System.Random rng = new System.Random(currentMap.seed);
+
 		#region Init*/
 		List<Coord> tilesCoords = new List<Coord>();
 		tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
@@ -38,7 +48,14 @@ public class MapGenerator : MonoBehaviour
 		Transform mapHolder = transform.Find(holderName);
 		if (mapHolder)
 		{
-			DestroyImmediate(mapHolder.gameObject);
+			if (fromEditor)
+			{
+				DestroyImmediate(mapHolder.gameObject);
+			}
+			else
+			{
+				Destroy(mapHolder.gameObject);
+			}
 		}
 		mapHolder = new GameObject(holderName).transform;
 		mapHolder.parent = transform;
@@ -84,7 +101,7 @@ public class MapGenerator : MonoBehaviour
 			{
 				float obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)rng.NextDouble());
 				Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
-				Transform obstacle = Instantiate(obstaclePrefab, position + Vector3.up * obstacleHeight / 2 * tileSize, Quaternion.identity) as Transform;
+				Transform obstacle = Instantiate(obstaclePrefab, position + (Vector3.up * obstacleHeight / 2f), Quaternion.identity) as Transform;
 				obstacle.parent = mapHolder;
 				obstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
 
@@ -111,7 +128,7 @@ public class MapGenerator : MonoBehaviour
 
 		// NavMesh
 		#region NavMesh*/
-		navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y);
+		navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * tileSize;
 		// LeftMask
 		Transform maskLeft = Instantiate(navMeshMask, Vector3.left * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
 		maskLeft.parent = mapHolder;
@@ -129,7 +146,7 @@ public class MapGenerator : MonoBehaviour
 		BottomMask.parent = mapHolder;
 		BottomMask.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
 
-
+		floor.localScale = new Vector3(currentMap.mapSize.x, currentMap.mapSize.y, 0.1f) * tileSize;
 		#endregion
 
 	}

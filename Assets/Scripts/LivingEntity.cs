@@ -4,8 +4,9 @@ using UnityEditor;
 
 public class LivingEntity : MonoBehaviour, IDamageable
 {
+	public ParticleSystem deathEffect;
 	public float startingHealth;
-	float health;
+	protected float health;
 	private bool dead;
 	public event System.Action OnDeath;
 
@@ -14,12 +15,15 @@ public class LivingEntity : MonoBehaviour, IDamageable
 		health = startingHealth;
 	}
 
-	public void takeHit(float damage, ContactPoint hit)
+	public virtual void takeHit(float damage, Vector3 hirPoint, Vector3 direction)
 	{
-		//TODO do something with hit
+		if (health <= damage)
+		{
+			Destroy(Instantiate(deathEffect.gameObject, hirPoint, Quaternion.FromToRotation(Vector3.forward, direction)), deathEffect.main.startLifetime.constant);
+		}
 		takeDamage(damage);
 	}
-	public void takeDamage(float damage)
+	public virtual void takeDamage(float damage)
 	{
 		health -= damage;
 		if (health <= 0 && !dead)

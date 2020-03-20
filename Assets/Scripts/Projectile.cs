@@ -25,12 +25,7 @@ public class Projectile : MonoBehaviour
 		IDamageable hit = other.GetComponent<IDamageable>();
 		if (hit != null)
 		{
-			hit.takeDamage(damage);
+			hit.takeHit(damage, transform.position, transform.forward);
 		}
-	}
-	private void OnCollisionEnter(Collision other)
-	{
-		Destroy(gameObject);
-
 	}
 }

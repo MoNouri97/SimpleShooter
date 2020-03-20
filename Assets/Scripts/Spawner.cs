@@ -21,6 +21,7 @@ public class Spawner : MonoBehaviour
 		public int enemyCount;
 		public float timeBetweenSpawns;
 	}
+	public event System.Action<int> OnNewWave;
 	MapGenerator map;
 	float campTime = 2;
 	float NextCampCheckTime;
@@ -34,6 +35,7 @@ public class Spawner : MonoBehaviour
 	{
 		playerEntity = FindObjectOfType<Player>();
 		playerT = playerEntity.transform;
+		playerEntity.OnDeath += OnPlayerDeath;
 
 		NextCampCheckTime = campTime + Time.time;
 		campPosOld = playerT.position;
@@ -63,6 +65,10 @@ public class Spawner : MonoBehaviour
 		}
 	}
 
+	void ResetPlayerPosition()
+	{
+		playerT.position = map.PositonToTile(Vector3.zero).position + Vector3.up;
+	}
 	IEnumerator SpawnEnemy()
 	{
 		float spawnDelay = 1;
@@ -84,7 +90,11 @@ public class Spawner : MonoBehaviour
 			timer += Time.deltaTime;
 			yield return null;
 		}
-
+		if (!spawnTile)
+		{
+			Debug.Log("error", spawnTile);
+			yield break;
+		}
 		Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
 		spawnedEnemy.OnDeath += OnEnemyDeath;
 	}
@@ -92,14 +102,15 @@ public class Spawner : MonoBehaviour
 	{
 		currentWave++;
 		// no more waves
-		if (currentWave >= waves.Length)
-		{
-			return;
-		}
+		if (currentWave >= waves.Length) return;
+
 		enemiesToSpawn = waves[currentWave].enemyCount;
 		enemiesAlive = enemiesToSpawn;
-
-		print("Wave" + (currentWave + 1));
+		if (OnNewWave != null)
+		{
+			OnNewWave(currentWave);
+			ResetPlayerPosition();
+		}
 	}
 
 	void OnPlayerDeath()
