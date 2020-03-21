@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+	public bool devMode;
 	public Enemy enemy;
 	public Wave[] waves;
 
@@ -15,12 +16,7 @@ public class Spawner : MonoBehaviour
 	int currentWave;
 
 
-	[System.Serializable]
-	public struct Wave
-	{
-		public int enemyCount;
-		public float timeBetweenSpawns;
-	}
+
 	public event System.Action<int> OnNewWave;
 	MapGenerator map;
 	float campTime = 2;
@@ -54,23 +50,38 @@ public class Spawner : MonoBehaviour
 			isCamping = Vector3.Distance(campPosOld, playerT.position) < campThreshold;
 			campPosOld = playerT.position;
 		}
-		if (enemiesToSpawn > 0 && Time.time > nextSpawnTime)
+		if ((enemiesToSpawn <= 0 && !waves[currentWave].infinite) || Time.time <= nextSpawnTime)
 		{
+			return;
+		}
 
-			enemiesToSpawn--;
-			nextSpawnTime = Time.time + waves[currentWave].timeBetweenSpawns;
+		enemiesToSpawn--;
+		nextSpawnTime = Time.time + waves[currentWave].timeBetweenSpawns;
 
-			StartCoroutine(SpawnEnemy());
+		StartCoroutine(SpawnEnemy());
 
+		if (devMode)
+		{
+			if (Input.GetButton("Fire2"))
+			{
+				Debug.Log("<strong>Skip</strong>");
+				StopAllCoroutines();
+				foreach (Enemy e in FindObjectsOfType<Enemy>())
+				{
+					Destroy(e.gameObject);
+				}
+				NextWave();
+			}
 		}
 	}
 
 	void ResetPlayerPosition()
 	{
-		playerT.position = map.PositonToTile(Vector3.zero).position + Vector3.up;
+		playerT.position = map.PositonToTile(Vector3.zero).position + Vector3.up * 5;
 	}
 	IEnumerator SpawnEnemy()
 	{
+		Wave wave = waves[currentWave];
 		float spawnDelay = 1;
 		float flashSpeed = 4;
 		//select tile
@@ -81,7 +92,7 @@ public class Spawner : MonoBehaviour
 		}
 		//geting material
 		Material mat = spawnTile.GetComponent<Renderer>().material;
-		Color initColor = mat.color;
+		Color initColor = Color.white;
 		Color flashColor = Color.red;
 		float timer = 0;
 		while (timer < spawnDelay)
@@ -96,6 +107,7 @@ public class Spawner : MonoBehaviour
 			yield break;
 		}
 		Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
+		spawnedEnemy.setProperties(wave.moveSpeed, wave.hitsToKillPlayer, wave.health, wave.color);
 		spawnedEnemy.OnDeath += OnEnemyDeath;
 	}
 	void NextWave()
@@ -124,4 +136,18 @@ public class Spawner : MonoBehaviour
 			NextWave();
 		}
 	}
+
+
+	[System.Serializable]
+	public struct Wave
+	{
+		public bool infinite;
+		public int enemyCount;
+		public float timeBetweenSpawns;
+		public float moveSpeed;
+		public int hitsToKillPlayer;
+		public float health;
+		public Color color;
+	}
+
 }

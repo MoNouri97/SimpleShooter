@@ -12,8 +12,8 @@ public class MapGenerator : MonoBehaviour
 	public Transform navMeshMask;
 	public Transform floor; // the floor behind the tiles used for color and collision
 
-	public Map[] maps;
 	public int mapIndex;
+	public Map[] maps;
 	[Header("Variables")]
 	public Vector2 maxMapSize;
 	public float tileSize;

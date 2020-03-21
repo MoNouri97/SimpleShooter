@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2322583783827235725}
   - component: {fileID: 4448210437323160484}
   - component: {fileID: -7820023984257253093}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4e499cd07e04d8b6b9af67aa997699e1, type: 2}
+  - {fileID: 2100000, guid: 471e0626a0ea3251b8123c927915c05b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,5 +123,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c63536090125892b7f22a69efc8d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMin: 50
-  forceMax: 120
+  forceMin: 100
+  forceMax: 200

@@ -19,50 +19,49 @@ public class Enemy : LivingEntity
 	float nextAttackTime;
 	float myCollisionRadius = .5f;
 	float targetCollisionRadius = .5f;
+	Material skinMat;
+	Color skinColor;
 
+	private void Awake()
+	{
+		pathfinder = GetComponent<NavMeshAgent>();
+		GameObject targetObject = GameObject.FindGameObjectWithTag("Player");
+		hasTarget = (targetObject != null);
+		if (hasTarget)
+		{
+			target = targetObject.transform;
+			targetEntity = target.GetComponent<LivingEntity>();
+		}
+	}
 	override protected void Start()
 	{
 		base.Start();
-		pathfinder = GetComponent<NavMeshAgent>();
-		GameObject targetObject = GameObject.FindGameObjectWithTag("Player");
 
-		hasTarget = (targetObject != null);
 		if (!hasTarget) return;
 
-		target = targetObject.transform;
 		currentState = State.Chasing;
-		targetEntity = target.GetComponent<LivingEntity>();
 		targetEntity.OnDeath += OnTargetDeath;
 
 		StartCoroutine(UpdatePath());
 
+	}
+	private void Update()
+	{
+		if (hasTarget && Time.time > nextAttackTime)
+		{
+			float disToTarget = (target.position - transform.position).sqrMagnitude;
+			if (disToTarget < Mathf.Pow(attackDisThreshold + myCollisionRadius + targetCollisionRadius, 2))
+			{
+				nextAttackTime = Time.time + timeBetweenAttacks;
+				StartCoroutine(Attack());
+			}
+		}
 	}
 	void OnTargetDeath()
 	{
 		currentState = State.Idle;
 		hasTarget = false;
 	}
-
-	private void Update()
-	{
-		if (!hasTarget)
-		{
-			return;
-		}
-
-		if (Time.time <= nextAttackTime)
-		{
-			return;
-		}
-
-		float disToTarget = (target.position - transform.position).sqrMagnitude;
-		if (disToTarget < Mathf.Pow(attackDisThreshold + myCollisionRadius + targetCollisionRadius, 2))
-		{
-			nextAttackTime = Time.time + timeBetweenAttacks;
-			StartCoroutine(Attack());
-		}
-	}
-
 	IEnumerator Attack()
 	{
 		currentState = State.Attacking;
@@ -116,7 +115,18 @@ public class Enemy : LivingEntity
 
 	}
 
-
+	public void setProperties(float speed, int hitsToKillPlayer, float health, Color color)
+	{
+		pathfinder.speed = speed;
+		if (hasTarget)
+		{
+			damage = Mathf.Ceil(targetEntity.startingHealth / hitsToKillPlayer);
+		}
+		startingHealth = health;
+		skinMat = GetComponent<Renderer>().material;
+		skinMat.color = color;
+		skinColor = color;
+	}
 	public override void takeHit(float damage, Vector3 hitPoint, Vector3 direction)
 	{
 

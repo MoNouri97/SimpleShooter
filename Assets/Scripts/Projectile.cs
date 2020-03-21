@@ -6,13 +6,15 @@ public class Projectile : MonoBehaviour
 {
 	public float speed;
 	public float damage = 1;
+	public Color trailColor;
 	Rigidbody rb;
 
 	private void Start()
 	{
-		Destroy(gameObject, 2f);  //TODO improve this
+		Destroy(gameObject, 2f);
 		rb = GetComponent<Rigidbody>();
 		rb.velocity = transform.forward * speed;
+		GetComponent<TrailRenderer>().material.SetColor("_TintColor", trailColor);
 	}
 	public void SetSpeed(float speed)
 	{

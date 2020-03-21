@@ -36,15 +36,20 @@ public class Player : LivingEntity
 		if (ground.Raycast(ray, out float rayDistance))
 		{
 			Vector3 intersectPoint = ray.GetPoint(rayDistance);
-			Debug.DrawLine(ray.origin, intersectPoint);
+			Debug.DrawLine(ray.origin, intersectPoint, Color.red);
 			controller.LookAt(intersectPoint);
 		}
 
 		// Weapon Input
 		if (Input.GetMouseButton(0))
 		{
-			gunController.Shoot();
+			gunController.OnTriggerHold();
 		}
+		if (Input.GetMouseButtonUp(0))
+		{
+			gunController.OnTriggerRelease();
+		}
+
 
 	}
 
