@@ -8,8 +8,11 @@ public class Player : LivingEntity
 	public float moveSpeed = 5;
 	public Camera viewCamera;
 
+
 	PlayerController controller;
 	GunController gunController;
+	[HideInInspector] public Vector3 aimPoint;
+
 
 
 	// Start is called before the first frame update
@@ -31,13 +34,21 @@ public class Player : LivingEntity
 
 		// Aim Input
 		Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
-		Plane ground = new Plane(Vector3.up, Vector3.zero);
+		Plane ground = new Plane(Vector3.up, Vector3.up * gunController.gunHeight);
+
 
 		if (ground.Raycast(ray, out float rayDistance))
 		{
-			Vector3 intersectPoint = ray.GetPoint(rayDistance);
-			Debug.DrawLine(ray.origin, intersectPoint, Color.red);
-			controller.LookAt(intersectPoint);
+			aimPoint = ray.GetPoint(rayDistance);
+			Debug.DrawLine(ray.origin, aimPoint, Color.red);
+
+			controller.LookAt(aimPoint);
+			if ((new Vector2(aimPoint.x, aimPoint.z) - new Vector2(transform.position.x, transform.position.z)).sqrMagnitude > 4)
+			{
+				gunController.Aim(aimPoint);
+
+			}
+
 		}
 
 		// Weapon Input
@@ -48,6 +59,11 @@ public class Player : LivingEntity
 		if (Input.GetMouseButtonUp(0))
 		{
 			gunController.OnTriggerRelease();
+		}
+
+		if (Input.GetButtonDown("Reload"))
+		{
+			gunController.Reload();
 		}
 
 

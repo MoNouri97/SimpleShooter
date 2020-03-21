@@ -42,6 +42,20 @@ public class Spawner : MonoBehaviour
 	}
 	private void Update()
 	{
+
+		#region dev mode : skipping levels
+		if (devMode && Input.GetButtonDown("Fire2"))
+		{
+			StopCoroutine("SpawnEnemy");
+			foreach (Enemy e in FindObjectsOfType<Enemy>())
+			{
+				GameObject.Destroy(e.gameObject);
+			}
+			NextWave();
+		}
+		#endregion
+
+
 		if (isDisabled) return;
 		if (Time.time > NextCampCheckTime)
 		{
@@ -58,21 +72,8 @@ public class Spawner : MonoBehaviour
 		enemiesToSpawn--;
 		nextSpawnTime = Time.time + waves[currentWave].timeBetweenSpawns;
 
-		StartCoroutine(SpawnEnemy());
+		StartCoroutine("SpawnEnemy");
 
-		if (devMode)
-		{
-			if (Input.GetButton("Fire2"))
-			{
-				Debug.Log("<strong>Skip</strong>");
-				StopAllCoroutines();
-				foreach (Enemy e in FindObjectsOfType<Enemy>())
-				{
-					Destroy(e.gameObject);
-				}
-				NextWave();
-			}
-		}
 	}
 
 	void ResetPlayerPosition()

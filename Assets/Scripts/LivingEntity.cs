@@ -19,7 +19,10 @@ public class LivingEntity : MonoBehaviour, IDamageable
 	{
 		if (health <= damage)
 		{
-			Destroy(Instantiate(deathEffect.gameObject, hirPoint, Quaternion.FromToRotation(Vector3.forward, direction)), deathEffect.main.startLifetime.constant);
+			Destroy(
+				Instantiate(deathEffect.gameObject, hirPoint, Quaternion.FromToRotation(Vector3.forward, direction)),
+				 deathEffect.main.startLifetime.constant
+			);
 		}
 		takeDamage(damage);
 	}

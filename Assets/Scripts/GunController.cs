@@ -8,6 +8,8 @@ public class GunController : MonoBehaviour
 	Gun equippedGun;
 	public Transform weaponHold;
 	public Gun startingGun;
+	public float gunHeight { get => weaponHold.position.y; }
+
 	private void Start()
 	{
 		if (startingGun != null)
@@ -24,6 +26,8 @@ public class GunController : MonoBehaviour
 		}
 		equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation);
 		equippedGun.transform.parent = weaponHold;
+		equippedGun.transform.localPosition = Vector3.zero;
+		equippedGun.transform.localRotation = Quaternion.identity;
 
 	}
 
@@ -41,4 +45,21 @@ public class GunController : MonoBehaviour
 			equippedGun.OnTriggerRelease();
 		}
 	}
+	public void Aim(Vector3 point)
+	{
+		if (equippedGun != null)
+		{
+			equippedGun.Aim(point);
+		}
+	}
+	public void Reload()
+	{
+		if (equippedGun != null)
+		{
+			equippedGun.Reload();
+		}
+	}
+
+
+
 }

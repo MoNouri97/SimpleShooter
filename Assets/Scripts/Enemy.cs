@@ -31,6 +31,7 @@ public class Enemy : LivingEntity
 		{
 			target = targetObject.transform;
 			targetEntity = target.GetComponent<LivingEntity>();
+			targetEntity.OnDeath += OnTargetDeath;
 		}
 	}
 	override protected void Start()
@@ -40,22 +41,23 @@ public class Enemy : LivingEntity
 		if (!hasTarget) return;
 
 		currentState = State.Chasing;
-		targetEntity.OnDeath += OnTargetDeath;
 
 		StartCoroutine(UpdatePath());
 
 	}
 	private void Update()
 	{
-		if (hasTarget && Time.time > nextAttackTime)
+		if (!hasTarget || Time.time <= nextAttackTime)
 		{
-			float disToTarget = (target.position - transform.position).sqrMagnitude;
-			if (disToTarget < Mathf.Pow(attackDisThreshold + myCollisionRadius + targetCollisionRadius, 2))
-			{
-				nextAttackTime = Time.time + timeBetweenAttacks;
-				StartCoroutine(Attack());
-			}
+			return;
 		}
+		float disToTarget = (target.position - transform.position).sqrMagnitude;
+		if (disToTarget >= Mathf.Pow(attackDisThreshold + myCollisionRadius + targetCollisionRadius, 2))
+		{
+			return;
+		}
+		nextAttackTime = Time.time + timeBetweenAttacks;
+		StartCoroutine(Attack());
 	}
 	void OnTargetDeath()
 	{
