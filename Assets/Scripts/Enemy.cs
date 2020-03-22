@@ -33,6 +33,7 @@ public class Enemy : LivingEntity
 			targetEntity = target.GetComponent<LivingEntity>();
 			targetEntity.OnDeath += OnTargetDeath;
 		}
+
 	}
 	override protected void Start()
 	{
@@ -125,7 +126,7 @@ public class Enemy : LivingEntity
 			damage = Mathf.Ceil(targetEntity.startingHealth / hitsToKillPlayer);
 		}
 		startingHealth = health;
-		skinMat = GetComponent<Renderer>().material;
+		skinMat = GetComponent<Renderer>().sharedMaterial;
 		skinMat.color = color;
 		skinColor = color;
 	}

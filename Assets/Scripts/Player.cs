@@ -7,22 +7,29 @@ public class Player : LivingEntity
 {
 	public float moveSpeed = 5;
 	public Camera viewCamera;
+	public Spawner spawner;
 
 
 	PlayerController controller;
 	GunController gunController;
+
+
 	[HideInInspector] public Vector3 aimPoint;
 
 
 
 	// Start is called before the first frame update
 
-
+	private void Awake()
+	{
+		controller = GetComponent<PlayerController>();
+		gunController = GetComponent<GunController>();
+		spawner.OnNewWave += OnNewWave;
+	}
 	override protected void Start()
 	{
 		base.Start();
-		controller = GetComponent<PlayerController>();
-		gunController = GetComponent<GunController>();
+
 	}
 
 	private void Update()
@@ -69,4 +76,6 @@ public class Player : LivingEntity
 
 	}
 
+
+	void OnNewWave(int wave) => health = startingHealth;
 }

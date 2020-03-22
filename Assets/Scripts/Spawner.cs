@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
 	float nextSpawnTime;
 	int currentWave;
 
-
+	//this is a comment
 
 	public event System.Action<int> OnNewWave;
 	MapGenerator map;
@@ -46,6 +46,7 @@ public class Spawner : MonoBehaviour
 		#region dev mode : skipping levels
 		if (devMode && Input.GetButtonDown("Fire2"))
 		{
+			if (currentWave + 1 == waves.Length) return;
 			StopCoroutine("SpawnEnemy");
 			foreach (Enemy e in FindObjectsOfType<Enemy>())
 			{
@@ -115,7 +116,11 @@ public class Spawner : MonoBehaviour
 	{
 		currentWave++;
 		// no more waves
-		if (currentWave >= waves.Length) return;
+		if (currentWave >= waves.Length)
+		{
+			Debug.Log("end");
+			return;
+		}
 
 		enemiesToSpawn = waves[currentWave].enemyCount;
 		enemiesAlive = enemiesToSpawn;

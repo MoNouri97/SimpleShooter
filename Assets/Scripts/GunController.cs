@@ -8,14 +8,14 @@ public class GunController : MonoBehaviour
 	Gun equippedGun;
 	public Transform weaponHold;
 	public Gun startingGun;
+	public Gun[] guns;
 	public float gunHeight { get => weaponHold.position.y; }
+
+
 
 	private void Start()
 	{
-		if (startingGun != null)
-		{
-			EquipGun(startingGun);
-		}
+		EquipGun(guns[0]);
 	}
 	public void EquipGun(Gun gunToEquip)
 	{
@@ -30,7 +30,10 @@ public class GunController : MonoBehaviour
 		equippedGun.transform.localRotation = Quaternion.identity;
 
 	}
-
+	public void EquipGun(int gunIndex)
+	{
+		EquipGun(guns[gunIndex]);
+	}
 	public void OnTriggerHold()
 	{
 		if (equippedGun != null)
