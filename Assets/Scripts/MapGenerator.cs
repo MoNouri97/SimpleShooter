@@ -97,7 +97,7 @@ public class MapGenerator : MonoBehaviour
 			Coord randCoord = GetRandomCoord();
 			obstacleMap[randCoord.x, randCoord.y] = true;
 			currentObstacleCount++;
-			if (randCoord != currentMap.mapCenter && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
+			if (randCoord != currentMap.center && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
 			{
 				float obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)rng.NextDouble());
 				Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
@@ -151,7 +151,7 @@ public class MapGenerator : MonoBehaviour
 
 	}
 
-	private Vector3 CoordToPosition(int x, int y)
+	public Vector3 CoordToPosition(int x, int y)
 	{
 		return new Vector3(
 			-currentMap.mapSize.x / 2f + 0.5f + x,
@@ -161,6 +161,10 @@ public class MapGenerator : MonoBehaviour
 	}
 	public Transform PositonToTile(Vector3 pos)
 	{
+		if (pos == Vector3.zero)
+		{
+			return PositonToTile(CoordToPosition(currentMap.center.x, currentMap.center.y));
+		}
 		int x = Mathf.RoundToInt(pos.x / tileSize + (currentMap.mapSize.x - 1) / 2f);
 		int y = Mathf.RoundToInt(pos.z / tileSize + (currentMap.mapSize.y - 1) / 2f);
 		x = Mathf.Clamp(x, 0, tileMap.GetLength(0) - 1);
@@ -190,8 +194,8 @@ public class MapGenerator : MonoBehaviour
 		int targetAccessibleCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y) - currentObstacleCount;
 
 		Queue<Coord> queue = new Queue<Coord>();
-		queue.Enqueue(currentMap.mapCenter);
-		flags[currentMap.mapCenter.x, currentMap.mapCenter.y] = true;
+		queue.Enqueue(currentMap.center);
+		flags[currentMap.center.x, currentMap.center.y] = true;
 		while (queue.Count > 0)
 		{
 
@@ -265,6 +269,6 @@ public class MapGenerator : MonoBehaviour
 		public float maxObstacleHeight;
 		public Color bgColor;
 		public Color fgColor;
-		public Coord mapCenter { get => new Coord(mapSize.x / 2, mapSize.y / 2); }
+		public Coord center { get => new Coord(mapSize.x / 2, mapSize.y / 2); }
 	}
 }
