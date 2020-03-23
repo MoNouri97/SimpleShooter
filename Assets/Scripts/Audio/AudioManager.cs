@@ -1,32 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
 	public static AudioManager instance;
-	public float masterVolume = 1;
-	public float sfxVolume = 1;
-	public float musicVolume = .1f;
+	private float masterVolume = 1;
+	private float sfxVolume = 1;
+	private float musicVolume = 0.1f;
 
-	AudioSource[] audioSources;
-	int activeSource;
+	AudioSource[] musicSources;
+	AudioSource sfxSource;
+	int activeSource = 0;
 	Transform playerT;
 	Transform listener;
-	void Awake()
+	SoundLibrary library;
+
+
+	public void SetMasterVolume(float value)
 	{
-		playerT = FindObjectOfType<Player>().transform;
-		listener = FindObjectOfType<AudioListener>().transform;
-		instance = (instance == null) ? this : instance;
-		audioSources = new AudioSource[2];
-		for (int i = 0; i < 2; i++)
-		{
-			GameObject newSrc = new GameObject("musicSrc " + i);
-			audioSources[i] = newSrc.AddComponent<AudioSource>();
-			newSrc.transform.parent = transform;
-		}
+		PlayerPrefs.SetFloat("masterVolume", value);
+		masterVolume = value;
 	}
 
+	public void SetSfxVolume(float value)
+	{
+		PlayerPrefs.SetFloat("sfxVolume", value);
+		masterVolume = value;
+	}
+
+	public void SetMusicVolume(float value)
+	{
+		PlayerPrefs.SetFloat("musicVolume", value);
+		masterVolume = value;
+	}
+
+	void Awake()
+	{
+		if (instance != null)
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+
+		instance = this;
+		DontDestroyOnLoad(gameObject);
+
+		SceneManager.sceneLoaded += OnNewScene;
+
+		library = GetComponent<SoundLibrary>();
+		playerT = FindObjectOfType<Player>().transform;
+		listener = FindObjectOfType<AudioListener>().transform;
+		musicSources = new AudioSource[2];
+		for (int i = 0; i < 2; i++)
+		{
+			musicSources[i] = new GameObject("musicSrc " + i).AddComponent<AudioSource>();
+			new GameObject("musicSrc " + i).transform.parent = transform;
+		}
+
+		//sfx
+		sfxSource = new GameObject("SFX Source").AddComponent<AudioSource>();
+		new GameObject("SFX Source").transform.parent = transform;
+
+		//get old prefs
+		masterVolume = PlayerPrefs.GetFloat("masterVolume", masterVolume);
+		musicVolume = PlayerPrefs.GetFloat("musicVolume", musicVolume);
+		sfxVolume = PlayerPrefs.GetFloat("sfxVolume", sfxVolume);
+
+	}
+
+
+	void OnNewScene(Scene scene, LoadSceneMode mode)
+	{
+		if (playerT == null)
+		{
+			if (FindObjectOfType<Player>() != null)
+			{
+				playerT = FindObjectOfType<Player>().transform;
+			}
+		}
+	}
 	// Update is called once per frame
 	void Update()
 	{
@@ -45,11 +100,20 @@ public class AudioManager : MonoBehaviour
 		PlaySound(clip, playerT.position);
 	}
 
+	public void PlaySound(string clip)
+	{
+		PlaySound(library.GetClipFromName(clip));
+	}
+
+	public void PlaySound()
+	{
+		soun
+	}
 	public void PlayMusic(AudioClip clip, float fadeDuration = 1)
 	{
 		activeSource = 1 - activeSource;
-		audioSources[activeSource].clip = clip;
-		audioSources[activeSource].Play();
+		musicSources[activeSource].clip = clip;
+		musicSources[activeSource].Play();
 
 		StartCoroutine(MusicFade(fadeDuration));
 
@@ -62,8 +126,8 @@ public class AudioManager : MonoBehaviour
 		while (percent < 1)
 		{
 			percent += Time.deltaTime * speed;
-			audioSources[activeSource].volume = Mathf.Lerp(0, musicVolume * masterVolume, percent);
-			audioSources[1 - activeSource].volume = Mathf.Lerp(musicVolume * masterVolume, 0, percent);
+			musicSources[activeSource].volume = Mathf.Lerp(0, GetMusicVolume() * masterVolume, percent);
+			musicSources[1 - activeSource].volume = Mathf.Lerp(GetMusicVolume() * masterVolume, 0, percent);
 			yield return null;
 		}
 

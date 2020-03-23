@@ -26,8 +26,9 @@ public class UI : MonoBehaviour
 
 		string title = "- Wave " + (wave + 1) + " -";
 		waveTitle.text = title;
-		string subTitle = "Enemies" + (spawner.waves[wave].enemyCount) + "";
-		waveCount.text = subTitle;
+
+		string count = (spawner.waves[wave].infinite) ? "Infinite" : (spawner.waves[wave].enemyCount) + "";
+		waveCount.text = "Enemies: " + count;
 
 		StartCoroutine("AnimateBanner");
 	}
@@ -53,7 +54,7 @@ public class UI : MonoBehaviour
 
 	IEnumerator AnimateBanner()
 	{
-		float delay = .5f;
+		float delay = 1f;
 		float direction = 1; //1:up , -1:down
 		float percent = 0;
 		float speed = 2.5f;
