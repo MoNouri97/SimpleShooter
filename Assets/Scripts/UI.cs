@@ -59,7 +59,6 @@ public class UI : MonoBehaviour
 		float speed = 2.5f;
 		do
 		{
-			Debug.Log(percent);
 
 			percent += Time.deltaTime * speed * direction;
 			banner.anchoredPosition = Vector2.up * Mathf.Lerp(-140, 0, percent);
