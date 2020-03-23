@@ -27,6 +27,9 @@ public class Gun : MonoBehaviour
 	public Transform shell;
 	public Transform shellEjector;
 	public Projectile projectile;
+	[Header("Audio")]
+	public AudioClip shootAudio;
+	public AudioClip reloadAudio;
 	MuzzleFlash muzzleFlash;
 
 	float nextShotTime;
@@ -101,6 +104,8 @@ public class Gun : MonoBehaviour
 		transform.localPosition -= Vector3.forward * Random.Range(kickMinMax.x, kickMinMax.y);
 		recoilAngle += Random.Range(recoilAngleMinMax.x, recoilAngleMinMax.y);
 		recoilAngle = Mathf.Clamp(recoilAngle, 0, 30);
+
+		AudioManager.instance.PlaySound(shootAudio);
 	}
 	public void OnTriggerHold()
 	{
@@ -129,6 +134,7 @@ public class Gun : MonoBehaviour
 		float reloadAngle;
 		Vector3 initRotation = transform.localEulerAngles;
 		float interpolation;
+		bool audio = false;
 		while (percent < 1)
 		{
 			percent += Time.deltaTime * speed;
@@ -136,6 +142,12 @@ public class Gun : MonoBehaviour
 			interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
 			reloadAngle = Mathf.Lerp(0, maxReloadAngle, interpolation);
 			transform.localEulerAngles = initRotation + Vector3.left * reloadAngle;
+
+			if (percent >= .5f && !audio)
+			{
+				audio = true;
+				AudioManager.instance.PlaySound(reloadAudio);
+			}
 
 			yield return null;
 		}

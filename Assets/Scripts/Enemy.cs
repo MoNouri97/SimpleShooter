@@ -48,7 +48,7 @@ public class Enemy : LivingEntity
 	}
 	private void Update()
 	{
-		if (!hasTarget || Time.time <= nextAttackTime)
+		if (currentState != State.Chasing || !hasTarget || Time.time <= nextAttackTime)
 		{
 			return;
 		}

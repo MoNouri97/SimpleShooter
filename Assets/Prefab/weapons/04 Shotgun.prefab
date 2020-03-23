@@ -293,7 +293,7 @@ PrefabInstance:
     - target: {fileID: 2611830620268154707, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: m_Name
-      value: Shotgun
+      value: 04 Shotgun
       objectReference: {fileID: 0}
     - target: {fileID: 3137282460173834212, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
@@ -368,7 +368,7 @@ PrefabInstance:
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: muzzleVelocity
-      value: 15
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
@@ -425,6 +425,16 @@ PrefabInstance:
       propertyPath: muzzle.Array.data[2]
       value: 
       objectReference: {fileID: 6800128424316660573}
+    - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
+        type: 3}
+      propertyPath: shootAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: aaa42a8055a3c252f99a5e8a4ae1337b, type: 3}
+    - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
+        type: 3}
+      propertyPath: reloadAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: bf73106893a127dbcb339d44c4b03978, type: 3}
     - target: {fileID: 8031333244900692689, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: m_LocalScale.z

@@ -859,6 +859,16 @@ PrefabInstance:
       propertyPath: angleSettleTime
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
+        type: 3}
+      propertyPath: shootAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: c800a091fcf6744d2bfebebf4464664b, type: 3}
+    - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
+        type: 3}
+      propertyPath: reloadAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f5eeddae8c9469eca9784c6f7c81a34, type: 3}
     - target: {fileID: 8031333244900692689, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: m_LocalPosition.y
