@@ -163,7 +163,11 @@ public class MapGenerator : MonoBehaviour
 	{
 		if (pos == Vector3.zero)
 		{
-			return PositonToTile(CoordToPosition(currentMap.center.x, currentMap.center.y));
+			Vector3 vector3 = CoordToPosition(currentMap.center.x, currentMap.center.y);
+			if (vector3 != Vector3.zero)
+			{
+				return PositonToTile(vector3);
+			}
 		}
 		int x = Mathf.RoundToInt(pos.x / tileSize + (currentMap.mapSize.x - 1) / 2f);
 		int y = Mathf.RoundToInt(pos.z / tileSize + (currentMap.mapSize.y - 1) / 2f);

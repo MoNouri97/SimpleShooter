@@ -125,7 +125,7 @@ PrefabInstance:
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: reloadTime
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
@@ -137,5 +137,10 @@ PrefabInstance:
       propertyPath: reloadAudio
       value: 
       objectReference: {fileID: 8300000, guid: 5cd3779f813aab03aa790dc29e0c3414, type: 3}
+    - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
+        type: 3}
+      propertyPath: maxReloadAngle
+      value: 360
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 642dbdafd6272855c9b1a30503313357, type: 3}

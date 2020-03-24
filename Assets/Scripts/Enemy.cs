@@ -48,7 +48,7 @@ public class Enemy : LivingEntity
 	}
 	private void Update()
 	{
-		if (currentState != State.Chasing || !hasTarget || Time.time <= nextAttackTime)
+		if (currentState != State.Chasing || !hasTarget || target == null || Time.time <= nextAttackTime)
 		{
 			return;
 		}
@@ -59,6 +59,7 @@ public class Enemy : LivingEntity
 		}
 		nextAttackTime = Time.time + timeBetweenAttacks;
 		StartCoroutine(Attack());
+		AudioManager.instance.PlaySound("Enemy Attack");
 	}
 	void OnTargetDeath()
 	{
@@ -132,8 +133,14 @@ public class Enemy : LivingEntity
 	}
 	public override void takeHit(float damage, Vector3 hitPoint, Vector3 direction)
 	{
-
+		AudioManager.instance.PlaySound("Impact");
 		base.takeHit(damage, hitPoint, direction);
+	}
+
+	override protected void Die()
+	{
+		base.Die();
+		AudioManager.instance.PlaySound(clip: "Enemy Death");
 	}
 
 }

@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour
 	Transform listener;
 	SoundLibrary library;
 
+	#region Volume Setters
 
 	public void SetMasterVolume(float value)
 	{
@@ -35,6 +36,7 @@ public class AudioManager : MonoBehaviour
 		PlayerPrefs.SetFloat("musicVolume", value);
 		masterVolume = value;
 	}
+	#endregion
 
 	void Awake()
 	{
@@ -57,12 +59,12 @@ public class AudioManager : MonoBehaviour
 		for (int i = 0; i < 2; i++)
 		{
 			musicSources[i] = new GameObject("musicSrc " + i).AddComponent<AudioSource>();
-			new GameObject("musicSrc " + i).transform.parent = transform;
+			musicSources[i].gameObject.transform.parent = transform;
 		}
 
 		//sfx
 		sfxSource = new GameObject("SFX Source").AddComponent<AudioSource>();
-		new GameObject("SFX Source").transform.parent = transform;
+		sfxSource.gameObject.transform.parent = transform;
 
 		//get old prefs
 		masterVolume = PlayerPrefs.GetFloat("masterVolume", masterVolume);
@@ -82,7 +84,7 @@ public class AudioManager : MonoBehaviour
 			}
 		}
 	}
-	// Update is called once per frame
+
 	void Update()
 	{
 		if (playerT != null)
@@ -95,9 +97,10 @@ public class AudioManager : MonoBehaviour
 			return;
 		AudioSource.PlayClipAtPoint(clip, pos, masterVolume * sfxVolume);
 	}
+
 	public void PlaySound(AudioClip clip)
 	{
-		PlaySound(clip, playerT.position);
+		sfxSource.PlayOneShot(clip, sfxVolume * masterVolume);
 	}
 
 	public void PlaySound(string clip)
@@ -105,10 +108,6 @@ public class AudioManager : MonoBehaviour
 		PlaySound(library.GetClipFromName(clip));
 	}
 
-	public void PlaySound()
-	{
-		soun
-	}
 	public void PlayMusic(AudioClip clip, float fadeDuration = 1)
 	{
 		activeSource = 1 - activeSource;
@@ -126,8 +125,8 @@ public class AudioManager : MonoBehaviour
 		while (percent < 1)
 		{
 			percent += Time.deltaTime * speed;
-			musicSources[activeSource].volume = Mathf.Lerp(0, GetMusicVolume() * masterVolume, percent);
-			musicSources[1 - activeSource].volume = Mathf.Lerp(GetMusicVolume() * masterVolume, 0, percent);
+			musicSources[activeSource].volume = Mathf.Lerp(0, musicVolume * masterVolume, percent);
+			musicSources[1 - activeSource].volume = Mathf.Lerp(musicVolume * masterVolume, 0, percent);
 			yield return null;
 		}
 

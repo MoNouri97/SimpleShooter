@@ -37,7 +37,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
 
 
 	[ContextMenu("Die")]
-	protected void Die()
+	protected virtual void Die()
 	{
 		if (OnDeath != null)
 		{
