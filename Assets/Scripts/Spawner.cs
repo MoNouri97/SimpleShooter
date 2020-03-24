@@ -5,6 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 	public bool devMode;
+	public bool isDisabled;
+
 	public Enemy enemy;
 	public Wave[] waves;
 
@@ -24,7 +26,6 @@ public class Spawner : MonoBehaviour
 	Vector3 campPosOld;
 	float campThreshold = 1.5f;
 	bool isCamping;
-	bool isDisabled;
 
 
 	private void Start()

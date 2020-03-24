@@ -53,7 +53,11 @@ public class AudioManager : MonoBehaviour
 		SceneManager.sceneLoaded += OnNewScene;
 
 		library = GetComponent<SoundLibrary>();
-		playerT = FindObjectOfType<Player>().transform;
+		Player player = FindObjectOfType<Player>();
+		if (player != null)
+		{
+			playerT = player.transform;
+		}
 		listener = FindObjectOfType<AudioListener>().transform;
 		musicSources = new AudioSource[2];
 		for (int i = 0; i < 2; i++)

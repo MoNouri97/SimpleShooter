@@ -253,6 +253,8 @@ MonoBehaviour:
   shellEjector: {fileID: 3524248557706108550}
   projectile: {fileID: 8506780796295202077, guid: 4878147e49d185d2aacfca6d5da02377,
     type: 3}
+  shootAudio: {fileID: 0}
+  reloadAudio: {fileID: 0}
 --- !u!114 &7422215489163191555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,9 +573,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.990566, g: 0.6843536, b: 0.19624421, a: 1}
-  m_Intensity: 9.01
-  m_Range: 3.4
+  m_Color: {r: 0.99215686, g: 0.41420904, b: 0.1960784, a: 1}
+  m_Intensity: 1.9
+  m_Range: 2.33
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

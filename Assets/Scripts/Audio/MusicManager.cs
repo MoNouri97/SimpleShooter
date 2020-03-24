@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
@@ -7,13 +9,15 @@ public class MusicManager : MonoBehaviour
 	private void Start()
 	{
 		AudioManager.instance.PlayMusic(menuTheme, 2);
+		SceneManager.sceneLoaded += UpdateMusic;
 
 	}
-	private void Update()
+
+	private void UpdateMusic(Scene scene, LoadSceneMode mode)
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (scene.name == "Game")
 		{
-			AudioManager.instance.PlayMusic(mainTheme, 3);
+			AudioManager.instance.PlayMusic(mainTheme, 2);
 		}
 	}
 }

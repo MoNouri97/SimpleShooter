@@ -181,12 +181,12 @@ PrefabInstance:
         type: 3}
       propertyPath: shootAudio
       value: 
-      objectReference: {fileID: 8300000, guid: fa09fcde1514c3cb08af43711b378e86, type: 3}
+      objectReference: {fileID: 8300000, guid: a4e7ea1eef3761eaba1245e2219bbade, type: 3}
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: reloadAudio
       value: 
-      objectReference: {fileID: 8300000, guid: 0348c60c9262398c997cb957fb0d6294, type: 3}
+      objectReference: {fileID: 8300000, guid: 4da7f48f76ed40962951c60e21134b26, type: 3}
     - target: {fileID: 8031333244900692689, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: m_LocalScale.y

@@ -131,12 +131,12 @@ PrefabInstance:
         type: 3}
       propertyPath: shootAudio
       value: 
-      objectReference: {fileID: 8300000, guid: 1144a9109558dd4efa53e1c4d80f5031, type: 3}
+      objectReference: {fileID: 8300000, guid: 914e3ba10368c7457be9fc37cf7b18b1, type: 3}
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: reloadAudio
       value: 
-      objectReference: {fileID: 8300000, guid: 5cd3779f813aab03aa790dc29e0c3414, type: 3}
+      objectReference: {fileID: 8300000, guid: 0bb5df3c0e8c407fda527ea819ac0f78, type: 3}
     - target: {fileID: 7197923026043669283, guid: 642dbdafd6272855c9b1a30503313357,
         type: 3}
       propertyPath: maxReloadAngle
