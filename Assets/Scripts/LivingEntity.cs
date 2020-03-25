@@ -6,8 +6,8 @@ public class LivingEntity : MonoBehaviour, IDamageable
 {
 	public ParticleSystem deathEffect;
 	public float startingHealth;
-	protected float health;
-	private bool dead;
+	public float health { get; protected set; }
+	protected bool dead;
 	public event System.Action OnDeath;
 
 	virtual protected void Start()

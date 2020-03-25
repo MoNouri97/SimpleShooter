@@ -26,10 +26,10 @@ public class Player : LivingEntity
 		gunController = GetComponent<GunController>();
 		spawner.OnNewWave += OnNewWave;
 	}
-	override protected void Start()
+	override protected void Die()
 	{
-		base.Start();
-
+		AudioManager.instance.PlaySound(clip: "Player Death");
+		base.Die();
 	}
 
 	private void Update()

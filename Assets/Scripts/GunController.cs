@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-	Gun equippedGun;
+	public Gun equippedGun { get; private set; }
 	public Transform weaponHold;
 	public Gun startingGun;
 	public Gun[] guns;

@@ -34,7 +34,7 @@ public class Gun : MonoBehaviour
 
 	float nextShotTime;
 	int shotRemainingInBurst;
-	int remainingInMag;
+	public int remainingInMag { get; private set; }
 	Projectile newProjectile;
 	bool triggerReleased;
 	bool isReloading;

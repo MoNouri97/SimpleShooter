@@ -115,11 +115,12 @@ public class Spawner : MonoBehaviour
 	}
 	void NextWave()
 	{
+		AudioManager.instance.PlaySound(clip: "Level Completed");
+
 		currentWave++;
 		// no more waves
 		if (currentWave >= waves.Length)
 		{
-			Debug.Log("end");
 			return;
 		}
 

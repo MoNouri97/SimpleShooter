@@ -7,6 +7,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : LivingEntity
 {
+	#region var
+
 	public float damage = 1;
 	NavMeshAgent pathfinder;
 	Transform target;
@@ -21,7 +23,9 @@ public class Enemy : LivingEntity
 	float targetCollisionRadius = .5f;
 	Material skinMat;
 	Color skinColor;
+	public static event System.Action OnDeathStatic;
 
+	#endregion
 	private void Awake()
 	{
 		pathfinder = GetComponent<NavMeshAgent>();
@@ -70,6 +74,8 @@ public class Enemy : LivingEntity
 	{
 		currentState = State.Attacking;
 		// pathfinder.enabled = false;
+		Material mat = GetComponent<Renderer>().material;
+		mat.color = Color.red;
 
 		Vector3 originalPos = transform.position;
 		Vector3 directionToTarget = (target.position - transform.position).normalized;
@@ -95,6 +101,8 @@ public class Enemy : LivingEntity
 			transform.position = Vector3.Lerp(originalPos, attackPos, interpolation);
 			yield return null;
 		}
+		mat.color = skinColor;
+
 		currentState = (hasTarget) ? State.Chasing : State.Idle;
 		// pathfinder.enabled = true;
 
@@ -109,8 +117,8 @@ public class Enemy : LivingEntity
 			{
 				Vector3 directionToTarget = (target.position - transform.position).normalized;
 				Vector3 destination = target.position
-																	- directionToTarget
-																	* (myCollisionRadius + targetCollisionRadius + attackDisThreshold / 2);
+				- directionToTarget
+				* (myCollisionRadius + targetCollisionRadius + attackDisThreshold / 2);
 				pathfinder.SetDestination(destination);
 			}
 			yield return new WaitForSeconds(refreshRate);
@@ -139,6 +147,12 @@ public class Enemy : LivingEntity
 
 	override protected void Die()
 	{
+
+		if (OnDeathStatic != null)
+		{
+			OnDeathStatic();
+		}
+		StopAllCoroutines();
 		base.Die();
 		AudioManager.instance.PlaySound(clip: "Enemy Death");
 	}

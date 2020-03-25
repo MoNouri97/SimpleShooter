@@ -2,28 +2,40 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UI : MonoBehaviour
 {
+	#region Refs
 	public float fadeTime;
+
+	[Header("Game Over")]
 	public Image fadeBG;
 	public GameObject gameOverUI;
+	[Header("banner")]
 	public RectTransform banner;
 	public Text waveTitle;
 	public Text waveCount;
-	Spawner spawner;
+
+
+
+	[Header("Refs")]
+	public Spawner spawner;
+	public Player player;
+
+	#endregion
+
 	void Awake()
 	{
-		FindObjectOfType<Player>().OnDeath += OnGameOver;
-		spawner = FindObjectOfType<Spawner>();
+		player.OnDeath += OnGameOver;
 		spawner.OnNewWave += OnNewWave;
 	}
+
 
 
 	void OnNewWave(int wave)
 	{
 		StopCoroutine("AnimateBanner");
-
 		string title = "- Wave " + (wave + 1) + " -";
 		waveTitle.text = title;
 
@@ -74,5 +86,9 @@ public class UI : MonoBehaviour
 		} while (percent > 0);
 
 	}
-	public void StartNewGame() => SceneManager.LoadScene("Game");
+	public void StartNewGame()
+	{
+		SceneManager.LoadScene("Game");
+
+	}
 }

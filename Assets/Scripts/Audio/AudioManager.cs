@@ -28,13 +28,13 @@ public class AudioManager : MonoBehaviour
 	public void SetSfxVolume(float value)
 	{
 		PlayerPrefs.SetFloat("sfxVolume", value);
-		masterVolume = value;
+		sfxVolume = value;
 	}
 
 	public void SetMusicVolume(float value)
 	{
 		PlayerPrefs.SetFloat("musicVolume", value);
-		masterVolume = value;
+		musicVolume = value;
 	}
 	#endregion
 
@@ -80,13 +80,12 @@ public class AudioManager : MonoBehaviour
 
 	void OnNewScene(Scene scene, LoadSceneMode mode)
 	{
-		if (playerT == null)
+		if (playerT != null || FindObjectOfType<Player>() == null)
 		{
-			if (FindObjectOfType<Player>() != null)
-			{
-				playerT = FindObjectOfType<Player>().transform;
-			}
+			return;
 		}
+
+		playerT = FindObjectOfType<Player>().transform;
 	}
 
 	void Update()
