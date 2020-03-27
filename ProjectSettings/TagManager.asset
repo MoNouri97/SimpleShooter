@@ -16,8 +16,8 @@ TagManager:
   - floor
   - obstacles
   - shells
-  - 
-  - 
+  - bullets
+  - PostProcessing
   - 
   - 
   - 

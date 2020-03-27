@@ -6,18 +6,31 @@ public class MusicManager : MonoBehaviour
 {
 	public AudioClip mainTheme;
 	public AudioClip menuTheme;
-	private void Start()
+	AudioClip clipToPlay;
+
+	void Start()
 	{
 		AudioManager.instance.PlayMusic(menuTheme, 2);
 		SceneManager.sceneLoaded += UpdateMusic;
 
 	}
 
-	private void UpdateMusic(Scene scene, LoadSceneMode mode)
+	void UpdateMusic(Scene scene, LoadSceneMode mode)
 	{
-		if (scene.name == "Game")
+		switch (scene.name)
 		{
-			AudioManager.instance.PlayMusic(mainTheme, 2);
+			case "Game":
+				clipToPlay = mainTheme;
+				break;
+			case "Menu":
+				clipToPlay = menuTheme;
+				break;
 		}
+		Invoke("PlayMusic", .2f);
+	}
+	public void PlayMusic()
+	{
+		AudioManager.instance.PlayMusic(clipToPlay, 2);
+		Invoke("PlayMusic", clipToPlay.length);
 	}
 }

@@ -46,7 +46,8 @@ public class UI : MonoBehaviour
 	}
 	void OnGameOver()
 	{
-		StartCoroutine(Fade(Color.clear, Color.black, fadeTime));
+		Cursor.visible = true;
+		StartCoroutine(Fade(Color.clear, new Color(0, 0, 0, .8f), fadeTime));
 	}
 
 	IEnumerator Fade(Color from, Color to, float time)

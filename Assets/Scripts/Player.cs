@@ -8,6 +8,8 @@ public class Player : LivingEntity
 	public float moveSpeed = 5;
 	public Camera viewCamera;
 	public Spawner spawner;
+	public Menus menus;
+
 
 
 	PlayerController controller;
@@ -15,6 +17,7 @@ public class Player : LivingEntity
 
 
 	[HideInInspector] public Vector3 aimPoint;
+	public static bool isPaused = false;
 
 
 
@@ -34,6 +37,24 @@ public class Player : LivingEntity
 
 	private void Update()
 	{
+		// Pause
+		if (Input.GetButtonDown("Pause"))
+		{
+			if (isPaused)
+			{
+				menus.Resume();
+				return;
+			}
+			menus.PauseGame();
+		}
+		if (isPaused)
+			return;
+
+		// fall
+		if (transform.position.y < -10)
+		{
+			Die();
+		}
 		// movement Input
 		Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 		Vector3 moveVelocity = moveInput.normalized * moveSpeed;
@@ -72,6 +93,10 @@ public class Player : LivingEntity
 		{
 			gunController.Reload();
 		}
+
+
+
+
 
 
 	}
