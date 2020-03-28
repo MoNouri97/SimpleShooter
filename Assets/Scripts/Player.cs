@@ -27,7 +27,8 @@ public class Player : LivingEntity
 	{
 		controller = GetComponent<PlayerController>();
 		gunController = GetComponent<GunController>();
-		spawner.OnNewWave += OnNewWave;
+		if (spawner != null)
+			spawner.OnNewWave += OnNewWave;
 	}
 	override protected void Die()
 	{
@@ -92,6 +93,10 @@ public class Player : LivingEntity
 		if (Input.GetButtonDown("Reload"))
 		{
 			gunController.Reload();
+		}
+		if (Input.GetButtonDown("Grenade"))
+		{
+			gunController.ThrowGrenade();
 		}
 
 

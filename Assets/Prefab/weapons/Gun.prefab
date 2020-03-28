@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4907849640938478989}
   - component: {fileID: 2018043740294624497}
   - component: {fileID: 6680686796281457104}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3524248557706108550}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ejector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8031333244900692689}
   - component: {fileID: 6697267127767671081}
   - component: {fileID: 6049506282954582172}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,8 @@ GameObject:
   - component: {fileID: 1090547170948892375}
   - component: {fileID: 7197923026043669283}
   - component: {fileID: 7422215489163191555}
-  m_Layer: 0
+  - component: {fileID: 8552344989970013573}
+  m_Layer: 13
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,8 +220,8 @@ Transform:
   m_Children:
   - {fileID: 3040990075512125869}
   - {fileID: 3524248557706108550}
-  - {fileID: 3381981854111919419}
   - {fileID: 1552081394347991245}
+  - {fileID: 3381981854111919419}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -236,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa7e46b7f22cfb8287a994173db032f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 0
   fireMode: 0
   magSize: 10
   msBetweenShots: 100
@@ -277,6 +279,19 @@ MonoBehaviour:
   - {fileID: 8059570537219933061}
   - {fileID: 8337939355111156766}
   flashTime: 0.05
+--- !u!65 &8552344989970013573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2611830620268154707}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &4314277601902925365
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +301,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3381981854111919419}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +320,7 @@ Transform:
   m_LocalScale: {x: 1.9498879, y: 1.9498879, z: 1.9498879}
   m_Children: []
   m_Father: {fileID: 1090547170948892375}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4895395934107411230
 GameObject:
@@ -317,7 +332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3176521585474377928}
   - component: {fileID: 8059570537219933061}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: gunFlash_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +414,7 @@ GameObject:
   - component: {fileID: 3137282460173834212}
   - component: {fileID: 7954004093304423519}
   - component: {fileID: 5650710322615939975}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7626828778463252091}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1552081394347991245}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +544,7 @@ Transform:
   - {fileID: 3558971126684502986}
   - {fileID: 7626828778463252091}
   m_Father: {fileID: 1090547170948892375}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7246058970257623429
 GameObject:
@@ -541,7 +556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3874868332543171993}
   - component: {fileID: 7878600549274264698}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -632,7 +647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3040990075512125869}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,7 +681,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3558971126684502986}
   - component: {fileID: 8337939355111156766}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: gunFlash_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

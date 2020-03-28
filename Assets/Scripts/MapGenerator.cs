@@ -19,6 +19,8 @@ public class MapGenerator : MonoBehaviour
 	public float tileSize;
 	[Range(0, 1)] public float outlinePercent;
 	public bool accessibleMap = false;
+	public Map trainingMap;
+
 	#endregion
 	Queue<Coord> shuffledCoords;
 	Queue<Coord> shuffledOpenCoords;
@@ -37,7 +39,7 @@ public class MapGenerator : MonoBehaviour
 	}
 	public void GenerateMap(bool fromEditor = false)
 	{
-		currentMap = maps[mapIndex];
+		currentMap = (mapIndex >= 0) ? maps[mapIndex] : trainingMap;
 		System.Random rng = new System.Random(currentMap.seed);
 
 		#region Init*/
@@ -232,6 +234,13 @@ public class MapGenerator : MonoBehaviour
 
 		return accessibleTileCount == targetAccessibleCount;
 	}
+
+
+	public void StartTraining()
+	{
+		currentMap = trainingMap;
+	}
+
 	[System.Serializable]
 	public struct Coord
 	{

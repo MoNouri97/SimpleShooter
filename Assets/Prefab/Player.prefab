@@ -218,7 +218,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3138239320639666746}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -257,6 +257,7 @@ MonoBehaviour:
   moveSpeed: 10
   viewCamera: {fileID: 0}
   spawner: {fileID: 0}
+  menus: {fileID: 0}
   aimPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &3138239320639666738
 MonoBehaviour:
@@ -271,14 +272,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponHold: {fileID: 3138239320237420623}
-  startingGun: {fileID: 5903820795853364215, guid: 4f9b08f5cc8211f47a7e0963a880c4dd,
-    type: 3}
+  startingGun: {fileID: 0}
   guns:
   - {fileID: 5819118347388356015, guid: 39f1a4da0031d9f9a8d6b051191573da, type: 3}
   - {fileID: 2250871659285515610, guid: 143dd3ea425bd8fc9848df44128b0c6f, type: 3}
   - {fileID: 8907564634729004148, guid: 80471946ada90bc63a27d76a1ef68f98, type: 3}
   - {fileID: 5903820795853364215, guid: 4f9b08f5cc8211f47a7e0963a880c4dd, type: 3}
   - {fileID: 8907564634729004148, guid: 57841c9b977aa4ff9af623de74a9ec2c, type: 3}
+  grenade: {fileID: 0}
 --- !u!114 &3138239320639666739
 MonoBehaviour:
   m_ObjectHideFlags: 0

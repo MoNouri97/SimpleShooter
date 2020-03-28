@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : PickUp
 {
 	#region vars
 
@@ -46,6 +45,7 @@ public class Gun : MonoBehaviour
 
 	#endregion
 
+
 	private void Start()
 	{
 		muzzleFlash = GetComponent<MuzzleFlash>();
@@ -54,6 +54,8 @@ public class Gun : MonoBehaviour
 	}
 	private void LateUpdate()
 	{
+		if (!isEquipped)
+			return;
 		#region animate recoil*/
 		transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref recoilVelocity, kickSettleTime);
 		recoilAngle = Mathf.SmoothDamp(recoilAngle, 0, ref recoilAngleVelocity, angleSettleTime);
@@ -61,9 +63,8 @@ public class Gun : MonoBehaviour
 		#endregion
 
 		if (!isReloading && remainingInMag == 0)
-		{
 			Reload();
-		}
+
 	}
 	public void Aim(Vector3 point)
 	{

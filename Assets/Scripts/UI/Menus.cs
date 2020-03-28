@@ -53,6 +53,7 @@ public class Menus : MonoBehaviour
 
 	public void Resume()
 	{
+		Cursor.visible = false;
 		gameObject.SetActive(false);
 		optionMenu.SetActive(false);
 		mainMenu.SetActive(false);
@@ -62,6 +63,7 @@ public class Menus : MonoBehaviour
 	}
 	public void PauseGame()
 	{
+		Cursor.visible = true;
 		gameObject.SetActive(true);
 		mainMenu.SetActive(true);
 		Time.timeScale = 0;
@@ -98,7 +100,12 @@ public class Menus : MonoBehaviour
 	public void SetFullscreen(bool val)
 	{
 		// print("fullscreen:" + val + Screen.resolutions[Screen.resolutions.Length - 1]);
+		// if (val)
+		// {
+		// 	Screen.SetResolution(Screen.resolutions[Screen.resolutions.Length - 1]);
+		// }
 		Screen.fullScreen = val;
+
 		PlayerPrefs.SetInt("fullscreen", (val) ? 1 : 0);
 	}
 

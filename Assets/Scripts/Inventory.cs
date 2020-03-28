@@ -6,7 +6,12 @@ public class Inventory : MonoBehaviour
 	GunController gunController;
 	private void Awake()
 	{
-		FindObjectOfType<Spawner>().OnNewWave += EquipWaveGun;
+		Spawner spawner = FindObjectOfType<Spawner>();
+		if (spawner != null)
+		{
+			spawner.OnNewWave += EquipWaveGun;
+		}
+
 		gunController = GetComponent<GunController>();
 	}
 

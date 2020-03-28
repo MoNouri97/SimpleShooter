@@ -10,25 +10,45 @@ public class GunController : MonoBehaviour
 	public Gun startingGun;
 	public Gun[] guns;
 	public float gunHeight { get => weaponHold.position.y; }
+	public static GunController instance;
+
+	public Grenade grenade;
 
 
 
 	private void Start()
 	{
-		EquipGun(guns[0]);
-	}
-	public void EquipGun(Gun gunToEquip)
-	{
+		if (instance == null)
+		{
+			instance = this;
+		}
 
+		if (startingGun == null)
+			return;
+		EquipGun(startingGun);
+	}
+	public void EquipGun(Gun gunToEquip, bool pickup = false)
+	{
 		if (equippedGun != null)
 		{
+			if (equippedGun == gunToEquip)
+			{
+				return;
+			}
 			Destroy(equippedGun.gameObject);
 		}
-		equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation);
-		equippedGun.transform.parent = weaponHold;
-		equippedGun.transform.localPosition = Vector3.zero;
-		equippedGun.transform.localRotation = Quaternion.identity;
-
+		if (!pickup)
+		{
+			equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation);
+		}
+		else
+		{
+			equippedGun = Instantiate(gunToEquip, weaponHold);
+		}
+		equippedGun.Equip();
+		equippedGun.gameObject.transform.parent = weaponHold;
+		equippedGun.gameObject.transform.localPosition = Vector3.zero;
+		equippedGun.gameObject.transform.localRotation = Quaternion.identity;
 	}
 	public void EquipGun(int gunIndex)
 	{
@@ -63,6 +83,8 @@ public class GunController : MonoBehaviour
 		}
 	}
 
-
-
+	public void ThrowGrenade()
+	{
+		Instantiate(grenade, weaponHold.position, weaponHold.rotation);
+	}
 }
