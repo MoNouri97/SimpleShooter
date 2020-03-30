@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3138239319865937896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.009999998, y: 0.48000002, z: 0.315}
-  m_LocalScale: {x: 0.68001, y: 0.237, z: 0.82}
+  m_LocalPosition: {x: -0.009999998, y: 0.48000002, z: 0.461}
+  m_LocalScale: {x: 0.6732099, y: 0.23463, z: 0.2275313}
   m_Children: []
   m_Father: {fileID: 3138239320639666737}
   m_RootOrder: 1
@@ -103,7 +103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3138239320237420622}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.639, y: 0.144, z: 0.546}
+  m_LocalPosition: {x: 0.85, y: -0.434, z: 0.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3138239320639666737}
@@ -146,6 +146,7 @@ Transform:
   m_Children:
   - {fileID: 3138239320237420623}
   - {fileID: 3138239319865937892}
+  - {fileID: 2140086773442326951}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -279,7 +280,7 @@ MonoBehaviour:
   - {fileID: 8907564634729004148, guid: 80471946ada90bc63a27d76a1ef68f98, type: 3}
   - {fileID: 5903820795853364215, guid: 4f9b08f5cc8211f47a7e0963a880c4dd, type: 3}
   - {fileID: 8907564634729004148, guid: 57841c9b977aa4ff9af623de74a9ec2c, type: 3}
-  grenade: {fileID: 0}
+  grenade: {fileID: 318047083457009424, guid: ba1f2f629e2a81fafa61c548fa6a9d4f, type: 3}
 --- !u!114 &3138239320639666739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,3 +293,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdf0be3f69edfb8d9c4caf1bba0ea88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8872086891532212202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2140086773442326951}
+  - component: {fileID: 7742118248367984388}
+  - component: {fileID: 491434746047132600}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2140086773442326951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872086891532212202}
+  m_LocalRotation: {x: 0.19649288, y: 0.0000000013330732, z: 0.000000010346524, w: 0.9805053}
+  m_LocalPosition: {x: -0.01, y: 0.971, z: -0.432}
+  m_LocalScale: {x: 0.11284794, y: 0.0639091, z: 0.48229146}
+  m_Children: []
+  m_Father: {fileID: 3138239320639666737}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 22.664001, y: 0, z: 0}
+--- !u!33 &7742118248367984388
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872086891532212202}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &491434746047132600
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872086891532212202}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 595ccaf7d9d1881faa8383a6fcd1d3bb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

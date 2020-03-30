@@ -16,4 +16,8 @@ public class Inventory : MonoBehaviour
 	}
 
 	void EquipWaveGun(int waveIndex) => gunController.EquipGun(waveIndex);
+	public void AddGrenade()
+	{
+		print("grenade ++");
+	}
 }

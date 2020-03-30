@@ -9,9 +9,6 @@ public class Player : LivingEntity
 	public Camera viewCamera;
 	public Spawner spawner;
 	public Menus menus;
-
-
-
 	PlayerController controller;
 	GunController gunController;
 
@@ -108,4 +105,24 @@ public class Player : LivingEntity
 
 
 	void OnNewWave(int wave) => health = startingHealth;
+
+	public void GainHealth(float val)
+	{
+		if (health + val > startingHealth)
+		{
+			health = startingHealth;
+			return;
+		}
+		health += val;
+	}
+	public void GainSpeed(float val)
+	{
+		StartCoroutine(SpeedBoost(val, 5));
+	}
+	IEnumerator SpeedBoost(float boost, float duration)
+	{
+		moveSpeed += boost;
+		yield return new WaitForSeconds(duration);
+		moveSpeed -= boost;
+	}
 }

@@ -10,16 +10,20 @@ public class Ammo : MonoBehaviour
 	public Text maxAmmo;
 
 	[Header("Refs")]
-	public Spawner spawner;
-	public GunController gunController;
+	Spawner spawner;
+	GunController gunController;
 	#endregion
 
-	void Awake()
+	void Start()
 	{
-		spawner.OnNewWave += OnNewWave;
+		spawner = Spawner.instance;
+		gunController = GunController.instance;
+		if (spawner != null)
+			spawner.OnNewWave += OnNewWave;
 	}
 	private void Update()
 	{
+		if (gunController.equippedGun == null) return;
 		currentAmmo.text = gunController.equippedGun.remainingInMag.ToString("D2");
 	}
 

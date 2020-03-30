@@ -9,6 +9,9 @@ public class Spawner : MonoBehaviour
 
 	public Enemy enemy;
 	public Wave[] waves;
+	[SerializeField] PickUp[] pickUps;
+	[SerializeField] int pickUpsPerWave = 3;
+	int pickUpsSpawned;
 
 	LivingEntity playerEntity;
 	Transform playerT;
@@ -26,8 +29,13 @@ public class Spawner : MonoBehaviour
 	Vector3 campPosOld;
 	float campThreshold = 1.5f;
 	bool isCamping;
+	//Singleton
+	public static Spawner instance { get; private set; }
 
-
+	private void Awake()
+	{
+		if (instance == null) instance = this;
+	}
 	private void Start()
 	{
 		playerEntity = FindObjectOfType<Player>();
@@ -84,6 +92,13 @@ public class Spawner : MonoBehaviour
 	}
 	IEnumerator SpawnEnemy()
 	{
+		// chance to spawn a pickup
+		bool rand = Random.Range(0f, 1f) < 0.1f;
+		if (rand && pickUpsSpawned++ < pickUpsPerWave)
+		{
+			StartCoroutine(SpawnPickup(1, 8));
+		}
+
 		Wave wave = waves[currentWave];
 		float spawnDelay = 1;
 		float flashSpeed = 4;
@@ -115,6 +130,7 @@ public class Spawner : MonoBehaviour
 	}
 	void NextWave()
 	{
+		pickUpsSpawned = 0;
 		AudioManager.instance.PlaySound(clip: "Level Completed");
 
 		currentWave++;
@@ -143,6 +159,35 @@ public class Spawner : MonoBehaviour
 		{
 			NextWave();
 		}
+	}
+
+	IEnumerator SpawnPickup(float spawnDelay = 1, float flashSpeed = 4)
+	{
+		Wave wave = waves[currentWave];
+		int random = Random.Range(0, pickUps.Length);
+		PickUp pickup = pickUps[random];
+
+		//select tile
+		Transform spawnTile = map.GetRandomOpenTile();
+
+		//geting material
+		Material mat = spawnTile.GetComponent<Renderer>().material;
+		Color initColor = Color.white;
+		Color flashColor = Color.green;
+		float timer = 0;
+		while (timer < spawnDelay)
+		{
+			mat.color = Color.Lerp(initColor, flashColor, Mathf.PingPong(timer * flashSpeed, 1));
+			timer += Time.deltaTime;
+			yield return null;
+		}
+		if (!spawnTile)
+		{
+			Debug.Log("error", spawnTile);
+			yield break;
+		}
+		PickUp spawnedEnemy = Instantiate(pickup, spawnTile.position + Vector3.up, Quaternion.identity) as PickUp;
+
 	}
 
 

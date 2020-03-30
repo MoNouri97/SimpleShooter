@@ -19,6 +19,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
 	{
 		if (health <= damage)
 		{
+			AudioManager.instance.PlaySound(clip: "Enemy Death");
 			Destroy(
 				Instantiate(deathEffect.gameObject, hirPoint, Quaternion.FromToRotation(Vector3.forward, direction)),
 				 deathEffect.main.startLifetime.constant

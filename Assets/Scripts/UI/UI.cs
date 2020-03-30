@@ -20,15 +20,17 @@ public class UI : MonoBehaviour
 
 
 	[Header("Refs")]
-	public Spawner spawner;
+	Spawner spawner;
 	public Player player;
 
 	#endregion
 
-	void Awake()
+	void Start()
 	{
+		spawner = Spawner.instance;
 		player.OnDeath += OnGameOver;
-		spawner.OnNewWave += OnNewWave;
+		if (spawner != null)
+			spawner.OnNewWave += OnNewWave;
 	}
 
 

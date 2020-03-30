@@ -154,7 +154,6 @@ public class Enemy : LivingEntity
 		}
 		StopAllCoroutines();
 		base.Die();
-		AudioManager.instance.PlaySound(clip: "Enemy Death");
 	}
 
 }

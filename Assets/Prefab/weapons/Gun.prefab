@@ -237,7 +237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa7e46b7f22cfb8287a994173db032f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 0
+  bounceHeight: 1
+  rotateSpeed: 2
+  pickUpEffect: {fileID: 459451166804731349, guid: 57319083e748beb65a4bb55e5eeeae45,
+    type: 3}
   fireMode: 0
   magSize: 10
   msBetweenShots: 100

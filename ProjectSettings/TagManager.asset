@@ -19,7 +19,7 @@ TagManager:
   - bullets
   - PostProcessing
   - PickUps
-  - 
+  - Explosion
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: top
+    uniqueID: 3199769131
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

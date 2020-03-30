@@ -16,18 +16,21 @@ public class GunController : MonoBehaviour
 
 
 
-	private void Start()
+	private void Awake()
 	{
 		if (instance == null)
 		{
 			instance = this;
 		}
 
+	}
+	private void Start()
+	{
 		if (startingGun == null)
 			return;
 		EquipGun(startingGun);
 	}
-	public void EquipGun(Gun gunToEquip, bool pickup = false)
+	public void EquipGun(Gun gunToEquip)
 	{
 		if (equippedGun != null)
 		{
@@ -37,15 +40,9 @@ public class GunController : MonoBehaviour
 			}
 			Destroy(equippedGun.gameObject);
 		}
-		if (!pickup)
-		{
-			equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation);
-		}
-		else
-		{
-			equippedGun = Instantiate(gunToEquip, weaponHold);
-		}
-		equippedGun.Equip();
+
+		equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation);
+
 		equippedGun.gameObject.transform.parent = weaponHold;
 		equippedGun.gameObject.transform.localPosition = Vector3.zero;
 		equippedGun.gameObject.transform.localRotation = Quaternion.identity;

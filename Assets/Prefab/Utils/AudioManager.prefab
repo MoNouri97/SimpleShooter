@@ -143,3 +143,6 @@ MonoBehaviour:
   - id: Level Completed
     sounds:
     - {fileID: 8300000, guid: ef599089d56cbc9c0bbbc491d3c90dcc, type: 3}
+  - id: Explosion
+    sounds:
+    - {fileID: 8300000, guid: 3d6182202b3fb6697afccfa698f8b3fd, type: 3}

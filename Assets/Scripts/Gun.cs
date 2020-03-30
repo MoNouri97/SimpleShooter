@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public class Gun : PickUp
+public class Gun : MonoBehaviour
 {
 	#region vars
 
@@ -54,8 +54,7 @@ public class Gun : PickUp
 	}
 	private void LateUpdate()
 	{
-		if (!isEquipped)
-			return;
+
 		#region animate recoil*/
 		transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref recoilVelocity, kickSettleTime);
 		recoilAngle = Mathf.SmoothDamp(recoilAngle, 0, ref recoilAngleVelocity, angleSettleTime);
