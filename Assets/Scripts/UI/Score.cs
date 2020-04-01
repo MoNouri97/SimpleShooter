@@ -10,17 +10,18 @@ public class Score : MonoBehaviour
 	public TextMeshProUGUI scoreCount;
 	public TextMeshProUGUI streakCount;
 	public float streakResetTime;
-	public Player player;
+	Player player;
 
 	#endregion
 	int score;
 	int streak;
 	bool onStreak;
 	float lastKillTime;
-	void Awake()
+	void Start()
 	{
 		streak = 0;
-		Enemy.OnDeathStatic += EnemyKilled;
+		Enemy.OnDeathStatic += OnEnemyKilled;
+		player = GetComponent<UI>().player;
 		player.OnDeath += OnPlayerDeath;
 	}
 	private void Update()
@@ -32,7 +33,7 @@ public class Score : MonoBehaviour
 		}
 
 	}
-	public void EnemyKilled()
+	public void OnEnemyKilled()
 	{
 		if (onStreak)
 		{
@@ -54,7 +55,7 @@ public class Score : MonoBehaviour
 
 	public void OnPlayerDeath()
 	{
-		Enemy.OnDeathStatic -= EnemyKilled;
+		Enemy.OnDeathStatic -= OnEnemyKilled;
 	}
 
 	public void StartNewGame()

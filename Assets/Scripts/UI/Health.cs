@@ -4,16 +4,27 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
 	#region Refs
+	[Header("Refs")]
 	public Slider healthBar;
 
-	[Header("Refs")]
-	public Player player;
+	Player player;
 	#endregion
-
+	public float smoothSpeed = 1;
+	private void start()
+	{
+		player = GetComponent<UI>().player;
+	}
 
 	void Update()
 	{
-		healthBar.value = player.health / player.startingHealth;
+		if (player == null)
+		{
+			player = GetComponent<UI>().player;
+			healthBar.value = 0;
+			return;
+		}
+		float v = player.health / player.startingHealth;
+		healthBar.value = Mathf.Lerp(healthBar.value, v, Time.deltaTime * smoothSpeed);
 	}
 
 

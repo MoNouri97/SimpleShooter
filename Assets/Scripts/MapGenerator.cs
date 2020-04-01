@@ -29,7 +29,11 @@ public class MapGenerator : MonoBehaviour
 	Map currentMap;
 	void Start()
 	{
-		FindObjectOfType<Spawner>().OnNewWave += OnNewWave;
+		Spawner spawner = FindObjectOfType<Spawner>();
+		if (spawner != null)
+		{
+			spawner.OnNewWave += OnNewWave;
+		}
 	}
 
 	void OnNewWave(int waveIndex)

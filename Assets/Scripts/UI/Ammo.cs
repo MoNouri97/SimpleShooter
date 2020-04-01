@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Ammo : MonoBehaviour
@@ -8,6 +9,8 @@ public class Ammo : MonoBehaviour
 	[Header("Ammo")]
 	public Text currentAmmo;
 	public Text maxAmmo;
+	public TextMeshProUGUI grenadeCount;
+
 
 	[Header("Refs")]
 	Spawner spawner;
@@ -23,6 +26,7 @@ public class Ammo : MonoBehaviour
 	}
 	private void Update()
 	{
+		grenadeCount.text = gunController.grenadeCount.ToString("D2");
 		if (gunController.equippedGun == null) return;
 		currentAmmo.text = gunController.equippedGun.remainingInMag.ToString("D2");
 	}

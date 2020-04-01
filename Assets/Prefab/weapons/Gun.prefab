@@ -237,10 +237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa7e46b7f22cfb8287a994173db032f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceHeight: 1
-  rotateSpeed: 2
-  pickUpEffect: {fileID: 459451166804731349, guid: 57319083e748beb65a4bb55e5eeeae45,
-    type: 3}
   fireMode: 0
   magSize: 10
   msBetweenShots: 100
@@ -396,7 +392,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 528645838208724776, guid: 1ad527833361ce1ee8c1f10faf916b08, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.990566, g: 0.8435939, b: 0.55602527, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -592,8 +588,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.99215686, g: 0.41420904, b: 0.1960784, a: 1}
-  m_Intensity: 1.9
-  m_Range: 2.33
+  m_Intensity: 1
+  m_Range: 2.95
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -745,7 +741,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 528645838208724776, guid: 1ad527833361ce1ee8c1f10faf916b08, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.990566, g: 0.8435939, b: 0.55602527, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

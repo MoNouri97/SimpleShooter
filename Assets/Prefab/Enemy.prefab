@@ -129,6 +129,10 @@ MonoBehaviour:
     type: 3}
   startingHealth: 1
   damage: 1
+  nextAttackTime: 0
+  myCollisionRadius: 0.5
+  targetCollisionRadius: 0.5
+  stunTime: 0.1
 --- !u!195 &6233308677491716908
 NavMeshAgent:
   m_ObjectHideFlags: 0

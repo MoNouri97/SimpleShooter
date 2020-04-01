@@ -18,11 +18,14 @@ public class Enemy : LivingEntity
 	State currentState;
 	float attackDisThreshold = .5f;
 	float timeBetweenAttacks = 1f;
-	float nextAttackTime;
-	float myCollisionRadius = .5f;
-	float targetCollisionRadius = .5f;
+	float reactionTime = .5f;
+	[SerializeField] float nextAttackTime;
+	[SerializeField] float myCollisionRadius = .5f;
+	[SerializeField] float targetCollisionRadius = .5f;
 	Material skinMat;
 	Color skinColor;
+	public float stunTime = .1f;
+
 	public static event System.Action OnDeathStatic;
 
 	#endregion
@@ -61,17 +64,28 @@ public class Enemy : LivingEntity
 		{
 			return;
 		}
-		nextAttackTime = Time.time + timeBetweenAttacks;
-		StartCoroutine(Attack());
-		AudioManager.instance.PlaySound("Enemy Attack");
+		StartCoroutine(React());
 	}
 	void OnTargetDeath()
 	{
 		currentState = State.Idle;
 		hasTarget = false;
 	}
+	IEnumerator React()
+	{
+		nextAttackTime = Time.time + timeBetweenAttacks;
+		yield return new WaitForSeconds(reactionTime);
+		float disToTarget = (target.position - transform.position).sqrMagnitude;
+
+		if (disToTarget >= Mathf.Pow(attackDisThreshold + myCollisionRadius + targetCollisionRadius, 2))
+		{
+			yield break;
+		}
+		StartCoroutine(Attack());
+	}
 	IEnumerator Attack()
 	{
+		AudioManager.instance.PlaySound("Enemy Attack");
 		currentState = State.Attacking;
 		// pathfinder.enabled = false;
 		Material mat = GetComponent<Renderer>().material;
@@ -79,9 +93,7 @@ public class Enemy : LivingEntity
 
 		Vector3 originalPos = transform.position;
 		Vector3 directionToTarget = (target.position - transform.position).normalized;
-		Vector3 attackPos = target.position
-															- directionToTarget
-															* (myCollisionRadius);
+		Vector3 attackPos = target.position - directionToTarget * (myCollisionRadius);
 		attackPos.y = originalPos.y;
 
 		float attackSpeed = 3;
@@ -127,7 +139,12 @@ public class Enemy : LivingEntity
 
 	}
 
-	public void setProperties(float speed, int hitsToKillPlayer, float health, Color color)
+	public void setProperties(
+		float speed,
+		int hitsToKillPlayer,
+		float health,
+		Color color,
+		float reactionTime = .5f)
 	{
 		pathfinder.speed = speed;
 		if (hasTarget)
@@ -145,9 +162,9 @@ public class Enemy : LivingEntity
 		base.takeHit(damage, hitPoint, direction);
 	}
 
+
 	override protected void Die()
 	{
-
 		if (OnDeathStatic != null)
 		{
 			OnDeathStatic();
@@ -156,4 +173,18 @@ public class Enemy : LivingEntity
 		base.Die();
 	}
 
+
+
+	public override void takeDamage(float damage)
+	{
+		StartCoroutine(Stun());
+		base.takeDamage(damage);
+	}
+
+	private IEnumerator Stun()
+	{
+		pathfinder.isStopped = true;
+		yield return new WaitForSeconds(stunTime);
+		pathfinder.isStopped = false;
+	}
 }

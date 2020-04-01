@@ -71,9 +71,9 @@ public class AudioManager : MonoBehaviour
 		sfxSource.gameObject.transform.parent = transform;
 
 		//get old prefs
-		masterVolume = PlayerPrefs.GetFloat("masterVolume", masterVolume);
-		musicVolume = PlayerPrefs.GetFloat("musicVolume", musicVolume);
-		sfxVolume = PlayerPrefs.GetFloat("sfxVolume", sfxVolume);
+		masterVolume = PlayerPrefs.GetFloat("masterVolume", 1);
+		musicVolume = PlayerPrefs.GetFloat("musicVolume", 1);
+		sfxVolume = PlayerPrefs.GetFloat("sfxVolume", 1);
 
 	}
 

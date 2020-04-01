@@ -9,8 +9,7 @@ public class Spawner : MonoBehaviour
 
 	public Enemy enemy;
 	public Wave[] waves;
-	[SerializeField] PickUp[] pickUps;
-	[SerializeField] int pickUpsPerWave = 3;
+	public PickUp[] pickUps;
 	int pickUpsSpawned;
 
 	LivingEntity playerEntity;
@@ -92,12 +91,7 @@ public class Spawner : MonoBehaviour
 	}
 	IEnumerator SpawnEnemy()
 	{
-		// chance to spawn a pickup
-		bool rand = Random.Range(0f, 1f) < 0.1f;
-		if (rand && pickUpsSpawned++ < pickUpsPerWave)
-		{
-			StartCoroutine(SpawnPickup(1, 8));
-		}
+
 
 		Wave wave = waves[currentWave];
 		float spawnDelay = 1;
@@ -110,7 +104,7 @@ public class Spawner : MonoBehaviour
 		}
 		//geting material
 		Material mat = spawnTile.GetComponent<Renderer>().material;
-		Color initColor = Color.white;
+		Color initColor = mat.color;
 		Color flashColor = Color.red;
 		float timer = 0;
 		while (timer < spawnDelay)
@@ -124,15 +118,21 @@ public class Spawner : MonoBehaviour
 			Debug.Log("error", spawnTile);
 			yield break;
 		}
+		mat.color = initColor;
 		Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
 		spawnedEnemy.setProperties(wave.moveSpeed, wave.hitsToKillPlayer, wave.health, wave.color);
 		spawnedEnemy.OnDeath += OnEnemyDeath;
 	}
 	void NextWave()
 	{
+		//clearing pickups
+		foreach (PickUp e in FindObjectsOfType<PickUp>())
+		{
+			GameObject.Destroy(e.gameObject);
+		}
 		pickUpsSpawned = 0;
-		AudioManager.instance.PlaySound(clip: "Level Completed");
 
+		AudioManager.instance.PlaySound(clip: "Level Completed");
 		currentWave++;
 		// no more waves
 		if (currentWave >= waves.Length)
@@ -158,6 +158,16 @@ public class Spawner : MonoBehaviour
 		if (--enemiesAlive == 0)
 		{
 			NextWave();
+			return;
+		}
+		else
+		{
+			// chance to spawn a pickup
+			bool rand = Random.Range(0f, 1f) < 0.2f;
+			if (rand)
+			{
+				StartCoroutine(SpawnPickup(1, 10));
+			}
 		}
 	}
 
@@ -172,7 +182,7 @@ public class Spawner : MonoBehaviour
 
 		//geting material
 		Material mat = spawnTile.GetComponent<Renderer>().material;
-		Color initColor = Color.white;
+		Color initColor = mat.color;
 		Color flashColor = Color.green;
 		float timer = 0;
 		while (timer < spawnDelay)
@@ -186,6 +196,7 @@ public class Spawner : MonoBehaviour
 			Debug.Log("error", spawnTile);
 			yield break;
 		}
+		mat.color = initColor;
 		PickUp spawnedEnemy = Instantiate(pickup, spawnTile.position + Vector3.up, Quaternion.identity) as PickUp;
 
 	}

@@ -13,6 +13,9 @@ public class GunController : MonoBehaviour
 	public static GunController instance;
 
 	public Grenade grenade;
+	[SerializeField] int initGrenadeCount = 0;
+	public int grenadeCount { private set; get; }
+
 
 
 
@@ -26,6 +29,7 @@ public class GunController : MonoBehaviour
 	}
 	private void Start()
 	{
+		grenadeCount = initGrenadeCount;
 		if (startingGun == null)
 			return;
 		EquipGun(startingGun);
@@ -80,8 +84,18 @@ public class GunController : MonoBehaviour
 		}
 	}
 
+	public void AddGrenade(int c = 1)
+	{
+		grenadeCount += c;
+	}
+
 	public void ThrowGrenade()
 	{
+		if (grenadeCount <= 0)
+		{
+			return;
+		}
 		Instantiate(grenade, weaponHold.position, weaponHold.rotation);
+		grenadeCount--;
 	}
 }

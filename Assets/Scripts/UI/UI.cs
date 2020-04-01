@@ -91,7 +91,7 @@ public class UI : MonoBehaviour
 	}
 	public void StartNewGame()
 	{
-		SceneManager.LoadScene("Game");
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
 	}
 }

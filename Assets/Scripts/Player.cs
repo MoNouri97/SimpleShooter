@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : LivingEntity
 {
 	public float moveSpeed = 5;
+	float moveSpeedInit;
 	public Camera viewCamera;
 	public Spawner spawner;
 	public Menus menus;
@@ -13,8 +14,10 @@ public class Player : LivingEntity
 	GunController gunController;
 
 
-	[HideInInspector] public Vector3 aimPoint;
+	public Vector3 aimPoint { get; set; }
 	public static bool isPaused = false;
+
+	public GameObject trail;
 
 
 
@@ -22,6 +25,7 @@ public class Player : LivingEntity
 
 	private void Awake()
 	{
+		moveSpeedInit = moveSpeed;
 		controller = GetComponent<PlayerController>();
 		gunController = GetComponent<GunController>();
 		if (spawner != null)
@@ -55,8 +59,21 @@ public class Player : LivingEntity
 		}
 		// movement Input
 		Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+
+
 		Vector3 moveVelocity = moveInput.normalized * moveSpeed;
 		controller.Move(moveVelocity);
+
+
+		if (moveSpeed > moveSpeedInit)
+		{
+			// boost activated
+			Vector3 position = transform.position;
+			position.y = 0;
+
+			Destroy(Instantiate(trail, position, Quaternion.identity), 3);
+
+		}
 
 		// Aim Input
 		Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
@@ -95,7 +112,14 @@ public class Player : LivingEntity
 		{
 			gunController.ThrowGrenade();
 		}
-
+		if (Input.GetMouseButton(1))
+		{
+			Time.timeScale = 0.2f;
+		}
+		if (Input.GetMouseButtonUp(1))
+		{
+			Time.timeScale = 1f;
+		}
 
 
 
@@ -115,7 +139,9 @@ public class Player : LivingEntity
 		}
 		health += val;
 	}
-	public void GainSpeed(float val)
+
+	[ContextMenu("speed")]
+	public void GainSpeed(float val = 5)
 	{
 		StartCoroutine(SpeedBoost(val, 5));
 	}

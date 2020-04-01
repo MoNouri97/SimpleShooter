@@ -8,6 +8,7 @@ public class Grenade : MonoBehaviour
 	public float detonationTime;
 	public float throwForce;
 	public float radius;
+	public float tickSpeed = 100;
 	public LayerMask layerMask;
 
 	List<LivingEntity> damaged = new List<LivingEntity>();
@@ -21,14 +22,16 @@ public class Grenade : MonoBehaviour
 	{
 		rb.AddForce((transform.forward) * throwForce, ForceMode.Impulse);
 		StartCoroutine(Detonate(detonationTime));
+
+		StartCoroutine(Tick(tickSpeed));
 	}
-	IEnumerator Tick(float time, float speed)
+	IEnumerator Tick(float speed)
 	{
 		float percent = 0;
 		while (true)
 		{
+			transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.1f, Mathf.PingPong(percent * speed, 1));
 			percent += Time.deltaTime;
-			transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 3, Mathf.PingPong(percent * speed, 1));
 			yield return null;
 		}
 	}

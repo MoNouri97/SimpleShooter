@@ -16,6 +16,7 @@ public class Menus : MonoBehaviour
 	public Slider sfx;
 	public Toggle fullScreen;
 	public Toggle quality;
+	public Toggle followCam;
 
 	// public Dropdown res;
 	// List<OptionData> resList = new List<OptionData>();
@@ -36,6 +37,14 @@ public class Menus : MonoBehaviour
 	public void Play()
 	{
 		SceneManager.LoadScene("Game");
+	}
+	public void PlayTraining()
+	{
+		SceneManager.LoadScene("Training");
+	}
+	public void BackToMain()
+	{
+		SceneManager.LoadScene("MainMenu");
 	}
 
 
@@ -79,6 +88,7 @@ public class Menus : MonoBehaviour
 		sfx.value = AudioManager.instance.sfxVolume;
 		fullScreen.isOn = PlayerPrefs.GetInt("fullscreen", 0) > 0;
 		quality.isOn = PlayerPrefs.GetInt("quality", 0) > 0;
+		followCam.isOn = PlayerPrefs.GetInt("followCam", 0) > 0;
 	}
 	public void SetVolume(float value, string channel)
 	{
@@ -115,6 +125,18 @@ public class Menus : MonoBehaviour
 		PlayerPrefs.SetInt("quality", (val) ? 1 : 0);
 
 	}
+
+	public void SetCam(bool val)
+	{
+		FollowPlayer followPlayer = FindObjectOfType<FollowPlayer>();
+		followPlayer.enabled = val;
+		PlayerPrefs.SetInt("followCam", (val) ? 1 : 0);
+		if (!val)
+		{
+			followPlayer.transform.position = followPlayer.originalPos;
+		}
+	}
+
 	// public void SetResolution(int i)
 	// {
 	// 	// print("res:" + resolutions[i].width + "x" + resolutions[i].height);
