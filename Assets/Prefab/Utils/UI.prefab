@@ -2230,10 +2230,10 @@ GameObject:
   - component: {fileID: 7532823453227980102}
   - component: {fileID: 7532823453227980103}
   - component: {fileID: 7532823453227980100}
+  - component: {fileID: 7532823453227980104}
   - component: {fileID: 7532823453227980109}
   - component: {fileID: 7532823453227980106}
   - component: {fileID: 7532823453227980107}
-  - component: {fileID: 7532823453227980104}
   - component: {fileID: 3852908657448210955}
   m_Layer: 5
   m_Name: UI
@@ -2327,6 +2327,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7532823453227980104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532823453227980101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c641e26cce82d9eb9622e41063e4489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTime: 0.5
+  fadeBG: {fileID: 7532823453477375106}
+  gameOverUI: {fileID: 7532823452944692512}
+  banner: {fileID: 7532823452780079452}
+  waveTitle: {fileID: 7532823454632856606}
+  waveCount: {fileID: 7532823452785543981}
+  player: {fileID: 0}
 --- !u!114 &7532823453227980109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,25 +2390,6 @@ MonoBehaviour:
   scoreCount: {fileID: 7532823453207413629}
   streakCount: {fileID: 7532823453613430403}
   streakResetTime: 1
---- !u!114 &7532823453227980104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7532823453227980101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c641e26cce82d9eb9622e41063e4489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeTime: 0.5
-  fadeBG: {fileID: 7532823453477375106}
-  gameOverUI: {fileID: 7532823452944692512}
-  banner: {fileID: 7532823452780079452}
-  waveTitle: {fileID: 7532823454632856606}
-  waveCount: {fileID: 7532823452785543981}
-  player: {fileID: 0}
 --- !u!114 &3852908657448210955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2948,7 +2948,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Back to main
+  m_Text: Back To Main
 --- !u!1 &7532823453477375104
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,7 +3113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7532823453613430405
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3230,13 +3230,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.852487, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 7532823453613430403}
-    characterCount: 2
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0

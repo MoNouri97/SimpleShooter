@@ -20,6 +20,9 @@ public class Player : LivingEntity
 	public GameObject trail;
 	Coroutine boost = null;
 
+	float lastHitTime;
+	float hitCooldown = .5f;
+
 
 	// Start is called before the first frame update
 
@@ -30,11 +33,6 @@ public class Player : LivingEntity
 		gunController = GetComponent<GunController>();
 		if (spawner != null)
 			spawner.OnNewWave += OnNewWave;
-	}
-	override protected void Die(bool permenant = true)
-	{
-		AudioManager.instance.PlaySound(clip: "Player Death");
-		base.Die(false);
 	}
 
 	private void Update()
@@ -110,8 +108,14 @@ public class Player : LivingEntity
 		}
 		if (Input.GetButtonDown("Grenade"))
 		{
+			gunController.ChargeGrenadeThrow();
+		}
+		if (Input.GetButtonUp("Grenade"))
+		{
 			gunController.ThrowGrenade();
 		}
+
+		// testing slow mo
 		if (Input.GetMouseButton(1))
 		{
 			Time.timeScale = 0.2f;
@@ -161,12 +165,30 @@ public class Player : LivingEntity
 		yield return new WaitForSeconds(duration);
 		moveSpeed -= boost;
 	}
+
+	override protected void Die(bool permenant = true)
+	{
+		AudioManager.instance.PlaySound(clip: "Player Death");
+		base.Die(false);
+	}
+
 	override public void Resurrect()
 	{
 		//cancel boosts;
 		StopAllCoroutines();
 		moveSpeed = moveSpeedInit;
 		base.Resurrect();
+	}
+	override public void takeDamage(float damage)
+	{
+		// prevents taking damage too quickly
+		if (lastHitTime + hitCooldown > Time.time)
+		{
+			return;
+		}
+
+		lastHitTime = Time.time;
+		base.takeDamage(damage);
 	}
 
 }

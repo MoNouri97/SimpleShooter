@@ -91,7 +91,10 @@ public class Spawner : MonoBehaviour
 
 	void ResetPlayerPosition()
 	{
-		playerEntity.Resurrect();
+		if (playerEntity.dead)
+		{
+			playerEntity.Resurrect();
+		}
 		playerT.position = map.PositonToTile(Vector3.zero).position + Vector3.up * 5;
 	}
 	IEnumerator SpawnEnemy()

@@ -7,7 +7,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
 	public ParticleSystem deathEffect;
 	public float startingHealth;
 	public float health { get; protected set; }
-	protected bool dead;
+	public bool dead { get; protected set; }
 	public event System.Action OnDeath;
 	public event System.Action OnBirth;
 

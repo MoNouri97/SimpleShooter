@@ -30,7 +30,7 @@ public class Score : MonoBehaviour
 	}
 	private void Update()
 	{
-		if (lastKillTime + streakResetTime <= Time.time)
+		if (onStreak && lastKillTime + streakResetTime <= Time.time)
 		{
 			streakCount.gameObject.SetActive(false);
 			onStreak = false;
@@ -42,7 +42,6 @@ public class Score : MonoBehaviour
 		if (onStreak)
 		{
 			streak++;
-			streakCount.text = "x" + streak;
 			streakCount.gameObject.SetActive(true);
 		}
 		else
@@ -51,7 +50,7 @@ public class Score : MonoBehaviour
 			streak = 1;
 		}
 		lastKillTime = Time.time;
-
+		streakCount.text = "x" + streak;
 		score += 5 * streak;
 		scoreCount.text = (score).ToString("D6");
 	}
@@ -66,6 +65,7 @@ public class Score : MonoBehaviour
 		lastKillTime = 0;
 		score = 0;
 		streak = 0;
+		onStreak = false;
 		scoreCount.text = (score).ToString("D6");
 		Enemy.OnDeathStatic += OnEnemyKilled;
 

@@ -174,8 +174,9 @@ public class Enemy : LivingEntity
 	public override void takeDamage(float damage)
 	{
 		AudioManager.instance.PlaySound("Impact");
-		StartCoroutine(Stun());
 		base.takeDamage(damage);
+		if (!dead)
+			StartCoroutine(Stun());
 	}
 
 	private IEnumerator Stun()
