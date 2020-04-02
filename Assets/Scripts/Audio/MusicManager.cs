@@ -24,6 +24,10 @@ public class MusicManager : MonoBehaviour
 			case "Menu":
 				clipToPlay = menuTheme;
 				break;
+			default:
+				clipToPlay = mainTheme;
+				break;
+
 		}
 		Invoke("PlayMusic", .2f);
 	}

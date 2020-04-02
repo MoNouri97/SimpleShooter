@@ -11738,6 +11738,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 7532823453227980104, guid: 920436eb6a7dd197cb33f33cc18aa5b9,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 265337063}
     - target: {fileID: 7532823453227980105, guid: 920436eb6a7dd197cb33f33cc18aa5b9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13288,6 +13293,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2032509640}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2038757028 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3852908657448210955, guid: 920436eb6a7dd197cb33f33cc18aa5b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1831624681}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c385b8b87164de395a24bf28378900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2054218306
 GameObject:
   m_ObjectHideFlags: 0
@@ -13919,7 +13936,7 @@ PrefabInstance:
         type: 3}
       propertyPath: menus
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2038757028}
     - target: {fileID: 3138239320639666747, guid: 7e2349a2aa55acbb59e66636e705c2ba,
         type: 3}
       propertyPath: startingHealth

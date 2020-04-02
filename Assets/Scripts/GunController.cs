@@ -15,9 +15,8 @@ public class GunController : MonoBehaviour
 	public Grenade grenade;
 	[SerializeField] int initGrenadeCount = 0;
 	public int grenadeCount { private set; get; }
-
-
-
+	float throwCharge;
+	private bool grenadeThrowCharging;
 
 	private void Awake()
 	{
@@ -33,6 +32,18 @@ public class GunController : MonoBehaviour
 		if (startingGun == null)
 			return;
 		EquipGun(startingGun);
+	}
+
+	private void Update()
+	{
+		if (grenadeThrowCharging)
+		{
+			throwCharge += Time.deltaTime * 200;
+			if (throwCharge > 50)
+			{
+				GrenadeThrow();
+			}
+		}
 	}
 	public void EquipGun(Gun gunToEquip)
 	{
@@ -84,18 +95,41 @@ public class GunController : MonoBehaviour
 		}
 	}
 
+
+	#region Grenade Logic
+
 	public void AddGrenade(int c = 1)
 	{
 		grenadeCount += c;
 	}
 
-	public void ThrowGrenade()
+	public void GrenadeThrow(float force)
+	{
+		if (!grenadeThrowCharging)
+			return;
+
+		grenadeThrowCharging = false;
+		Grenade g = Instantiate(grenade, weaponHold.position, weaponHold.rotation);
+		g.throwForce = force;
+		grenadeCount--;
+		throwCharge = 0;
+	}
+	public void GrenadeThrow()
+	{
+		GrenadeThrow(throwCharge);
+	}
+
+	public void GrenadePullPin()
 	{
 		if (grenadeCount <= 0)
 		{
 			return;
 		}
-		Instantiate(grenade, weaponHold.position, weaponHold.rotation);
-		grenadeCount--;
+		grenadeThrowCharging = true;
+
 	}
+
+
+	#endregion
+
 }

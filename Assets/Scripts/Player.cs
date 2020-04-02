@@ -108,17 +108,17 @@ public class Player : LivingEntity
 		}
 		if (Input.GetButtonDown("Grenade"))
 		{
-			gunController.ChargeGrenadeThrow();
+			gunController.GrenadePullPin();
 		}
 		if (Input.GetButtonUp("Grenade"))
 		{
-			gunController.ThrowGrenade();
+			gunController.GrenadeThrow();
 		}
 
 		// testing slow mo
-		if (Input.GetMouseButton(1))
+		if (Input.GetMouseButtonDown(1))
 		{
-			Time.timeScale = 0.2f;
+			Time.timeScale = 0.5f;
 		}
 		if (Input.GetMouseButtonUp(1))
 		{
