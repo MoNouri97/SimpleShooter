@@ -5,10 +5,10 @@ public abstract class PickUp : MonoBehaviour
 	public float bounceHeight;
 	public float rotateSpeed;
 	public GameObject pickUpEffect;
-	public Vector3 rotateAxe = Vector3.up;
+	Vector3 rotateAxe = new Vector3(x: 1, y: 1, z: .5f);
 	public Texture sprite;
 	public Transform render;
-	public Color trailsColor;
+	public Color color;
 
 	void Start()
 	{
@@ -16,12 +16,17 @@ public abstract class PickUp : MonoBehaviour
 		particleSystem.GetComponent<Renderer>().material.mainTexture = sprite;
 
 		var psr = particleSystem.GetComponent<ParticleSystemRenderer>();
-		Material psrTrailMat = new Material(psr.trailMaterial);
-		psrTrailMat.SetColor("_Color", trailsColor);
-		psrTrailMat.SetColor("_EmissionColor", trailsColor);
-		psr.trailMaterial = psrTrailMat;
+		Material mat = psr.material;
+		mat.SetColor("_EmissionColor", color);
+		render.GetComponent<Renderer>().material.color = color;
+		Destroy(gameObject, 3f);
+		/*trails test*/
 
-		render.GetComponent<Renderer>().material.color = trailsColor;
+		// Material psrTrailMat = new Material(psr.trailMaterial);
+		// psrTrailMat.SetColor("_Color", trailsColor);
+		// psrTrailMat.SetColor("_EmissionColor", trailsColor);
+		// psr.trailMaterial = psrTrailMat;
+
 	}
 	void Update()
 	{

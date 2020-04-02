@@ -259,7 +259,7 @@ MonoBehaviour:
   viewCamera: {fileID: 0}
   spawner: {fileID: 0}
   menus: {fileID: 0}
-  aimPoint: {x: 0, y: 0, z: 0}
+  trail: {fileID: 459451166804731349, guid: eacdd362ab3da43cf81d650fab6ee434, type: 3}
 --- !u!114 &3138239320639666738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +281,7 @@ MonoBehaviour:
   - {fileID: 5903820795853364215, guid: 4f9b08f5cc8211f47a7e0963a880c4dd, type: 3}
   - {fileID: 8907564634729004148, guid: 57841c9b977aa4ff9af623de74a9ec2c, type: 3}
   grenade: {fileID: 318047083457009424, guid: ba1f2f629e2a81fafa61c548fa6a9d4f, type: 3}
+  initGrenadeCount: 0
 --- !u!114 &3138239320639666739
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -576,18 +576,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &119184144 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7532823453799604209, guid: 199046393231beb2aa7c2d000c113f4c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7532823453681730785}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5c385b8b87164de395a24bf28378900, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &134776980
 GameObject:
   m_ObjectHideFlags: 0
@@ -10131,6 +10119,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567892739}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1571403177 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3852908657448210955, guid: 199046393231beb2aa7c2d000c113f4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 7532823453681730785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c385b8b87164de395a24bf28378900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1588050148
 GameObject:
   m_ObjectHideFlags: 0
@@ -12323,26 +12323,29 @@ MonoBehaviour:
   enemy: {fileID: 6233308677491716909, guid: 9d59c3c9d8ede5cafa5e6ebf1b29c9fa, type: 3}
   waves:
   - infinite: 0
-    enemyCount: 0
-    timeBetweenSpawns: 1
-    moveSpeed: 1
+    enemyCount: 30
+    timeBetweenSpawns: 0.7
+    moveSpeed: 3
     hitsToKillPlayer: 5
     health: 1
     color: {r: 0.35312527, g: 0.9339623, b: 0.3127893, a: 1}
+    reactionTime: 0.5
   - infinite: 0
     enemyCount: 60
-    timeBetweenSpawns: 0.8
-    moveSpeed: 2.3
+    timeBetweenSpawns: 0.6
+    moveSpeed: 3
     hitsToKillPlayer: 5
     health: 2
     color: {r: 0.2325116, g: 0.27460077, b: 0.8962264, a: 0}
+    reactionTime: 0.3
   - infinite: 0
     enemyCount: 70
     timeBetweenSpawns: 0.7
-    moveSpeed: 2.5
+    moveSpeed: 4
     hitsToKillPlayer: 5
     health: 2
     color: {r: 0.9811321, g: 0.14809541, b: 0.16982669, a: 1}
+    reactionTime: 0.3
   - infinite: 0
     enemyCount: 80
     timeBetweenSpawns: 0.6
@@ -12350,13 +12353,15 @@ MonoBehaviour:
     hitsToKillPlayer: 6
     health: 1
     color: {r: 0.9833616, g: 1, b: 0, a: 1}
+    reactionTime: 0.3
   - infinite: 1
     enemyCount: -1
     timeBetweenSpawns: 0.5
-    moveSpeed: 5
+    moveSpeed: 10
     hitsToKillPlayer: 5
     health: 1
     color: {r: 0, g: 0, b: 0, a: 0}
+    reactionTime: 0.2
   pickUps:
   - {fileID: 8172064323829972411, guid: 73690a554f9f57eadad73a32e93be365, type: 3}
   - {fileID: 6307104120323166321, guid: 4202b70a39c60c188979965931d7ff97, type: 3}
@@ -13762,7 +13767,7 @@ PrefabInstance:
         type: 3}
       propertyPath: menus
       value: 
-      objectReference: {fileID: 119184144}
+      objectReference: {fileID: 1571403177}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e2349a2aa55acbb59e66636e705c2ba, type: 3}
 --- !u!1001 &7532823453681730785
@@ -13772,11 +13777,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7532823452770195602, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7532823453227980101, guid: 199046393231beb2aa7c2d000c113f4c,
         type: 3}
       propertyPath: m_Name
@@ -13892,52 +13892,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7532823453227980106, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 265337063}
-    - target: {fileID: 7532823453227980106, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: smoothSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7532823453227980107, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 265337063}
-    - target: {fileID: 7532823453386107767, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7532823453997286309, guid: 199046393231beb2aa7c2d000c113f4c,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7532823454155091619, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7532823454298757763, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 781f9c7d13c06b0fb839725e6ac2b68a,
-        type: 2}
-    - target: {fileID: 7532823454298757763, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -3796584169213527320, guid: 781f9c7d13c06b0fb839725e6ac2b68a,
-        type: 2}
-    - target: {fileID: 7532823454298757763, guid: 199046393231beb2aa7c2d000c113f4c,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 33.85
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 199046393231beb2aa7c2d000c113f4c, type: 3}

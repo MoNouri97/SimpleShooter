@@ -7,6 +7,7 @@ using static UnityEngine.UI.Dropdown;
 
 public class Menus : MonoBehaviour
 {
+	public GameObject pauseMenu;
 	public GameObject optionMenu;
 	public GameObject mainMenu;
 
@@ -63,9 +64,7 @@ public class Menus : MonoBehaviour
 	public void Resume()
 	{
 		Cursor.visible = false;
-		gameObject.SetActive(false);
-		optionMenu.SetActive(false);
-		mainMenu.SetActive(false);
+		pauseMenu.SetActive(false);
 		Player.isPaused = false;
 		Time.timeScale = 1;
 
@@ -73,8 +72,8 @@ public class Menus : MonoBehaviour
 	public void PauseGame()
 	{
 		Cursor.visible = true;
-		gameObject.SetActive(true);
-		mainMenu.SetActive(true);
+		pauseMenu.SetActive(true);
+		ShowMain();
 		Time.timeScale = 0;
 		Player.isPaused = true;
 	}
@@ -83,12 +82,20 @@ public class Menus : MonoBehaviour
 
 	public void Init()
 	{
+		// getting user config and
+		// initializing the UI
 		master.value = AudioManager.instance.masterVolume;
 		music.value = AudioManager.instance.musicVolume;
 		sfx.value = AudioManager.instance.sfxVolume;
+
 		fullScreen.isOn = PlayerPrefs.GetInt("fullscreen", 0) > 0;
-		quality.isOn = PlayerPrefs.GetInt("quality", 0) > 0;
-		followCam.isOn = PlayerPrefs.GetInt("followCam", 0) > 0;
+		SetFullscreen(fullScreen.isOn);
+
+		quality.isOn = PlayerPrefs.GetInt("quality", 1) > 0;
+		SetQuality(quality.isOn);
+
+		followCam.isOn = PlayerPrefs.GetInt("followCam", 1) > 0;
+		SetCam(followCam.isOn);
 	}
 	public void SetVolume(float value, string channel)
 	{

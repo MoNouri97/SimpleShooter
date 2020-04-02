@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+	public GameObject impactEffect;
 	public float speed;
 	public float damage = 1;
 	public Color trailColor;
 	Rigidbody rb;
+
 
 	private void Start()
 	{
@@ -25,19 +27,24 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Destroy(gameObject);
-		IDamageable hit = other.GetComponent<IDamageable>();
-		if (hit != null)
-		{
-			hit.takeHit(damage, transform.position, transform.forward);
-		}
+		Impact(other);
 	}
 	private void OnCollisionEnter(Collision other)
 	{
-		IDamageable hit = other.collider.GetComponent<IDamageable>();
+		Impact(other.collider, other);
+	}
+
+	private void Impact(Collider collider, Collision collision = null)
+	{
+		Destroy(gameObject);
+		if (collision != null)
+		{
+			Destroy(Instantiate(impactEffect, transform.position, Quaternion.LookRotation(collision.GetContact(0).normal, Vector3.up)), 1f);
+		}
+
+		IDamageable hit = collider.GetComponent<IDamageable>();
 		if (hit != null)
 		{
-			Destroy(gameObject);
 			hit.takeHit(damage, transform.position, transform.forward);
 		}
 	}

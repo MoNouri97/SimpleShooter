@@ -18,7 +18,7 @@ public class Player : LivingEntity
 	public static bool isPaused = false;
 
 	public GameObject trail;
-
+	Coroutine boost = null;
 
 
 	// Start is called before the first frame update
@@ -31,10 +31,10 @@ public class Player : LivingEntity
 		if (spawner != null)
 			spawner.OnNewWave += OnNewWave;
 	}
-	override protected void Die()
+	override protected void Die(bool permenant = true)
 	{
 		AudioManager.instance.PlaySound(clip: "Player Death");
-		base.Die();
+		base.Die(false);
 	}
 
 	private void Update()
@@ -65,13 +65,13 @@ public class Player : LivingEntity
 		controller.Move(moveVelocity);
 
 
-		if (moveSpeed > moveSpeedInit)
+		if (moveSpeed > moveSpeedInit && moveVelocity != Vector3.zero)
 		{
 			// boost activated
 			Vector3 position = transform.position;
 			position.y = 0;
 
-			Destroy(Instantiate(trail, position, Quaternion.identity), 3);
+			Destroy(Instantiate(trail, position, Quaternion.identity), .7f);
 
 		}
 
@@ -143,7 +143,17 @@ public class Player : LivingEntity
 	[ContextMenu("speed")]
 	public void GainSpeed(float val = 5)
 	{
-		StartCoroutine(SpeedBoost(val, 5));
+
+		//check for an already active boost
+		if (moveSpeed > moveSpeedInit && boost != null)
+		{
+			// boost Refill;
+			moveSpeed = moveSpeedInit;
+			StopCoroutine(boost);
+			print("boost refill " + moveSpeed);
+
+		}
+		boost = StartCoroutine(SpeedBoost(val, 5));
 	}
 	IEnumerator SpeedBoost(float boost, float duration)
 	{
@@ -151,4 +161,12 @@ public class Player : LivingEntity
 		yield return new WaitForSeconds(duration);
 		moveSpeed -= boost;
 	}
+	override public void Resurrect()
+	{
+		//cancel boosts;
+		StopAllCoroutines();
+		moveSpeed = moveSpeedInit;
+		base.Resurrect();
+	}
+
 }

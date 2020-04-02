@@ -9,6 +9,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
 	public float health { get; protected set; }
 	protected bool dead;
 	public event System.Action OnDeath;
+	public event System.Action OnBirth;
 
 	virtual protected void Start()
 	{
@@ -38,14 +39,31 @@ public class LivingEntity : MonoBehaviour, IDamageable
 
 
 	[ContextMenu("Die")]
-	protected virtual void Die()
+	protected virtual void Die(bool permenant = true)
 	{
 		if (OnDeath != null)
 		{
 			OnDeath();
 		}
 		dead = true;
-		Destroy(gameObject);
+		if (permenant)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
+	public virtual void Resurrect()
+	{
+		dead = false;
+		if (OnBirth != null)
+		{
+			OnBirth();
+		}
+		gameObject.SetActive(true);
+		health = startingHealth;
+	}
 }

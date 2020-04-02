@@ -52,7 +52,7 @@ public class UI : MonoBehaviour
 		StartCoroutine(Fade(Color.clear, new Color(0, 0, 0, .8f), fadeTime));
 	}
 
-	IEnumerator Fade(Color from, Color to, float time)
+	IEnumerator Fade(Color from, Color to, float time, bool animateIn = true)
 	{
 		float percent = 0;
 		float speed = 1 / time;
@@ -63,7 +63,8 @@ public class UI : MonoBehaviour
 
 			yield return null;
 		}
-		gameOverUI.SetActive(true);
+
+		gameOverUI.SetActive(animateIn);
 
 	}
 
@@ -93,5 +94,14 @@ public class UI : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
+	}
+	public void RestartWave()
+	{
+		if (spawner)
+		{
+			spawner.restartWave();
+			Cursor.visible = false;
+			StartCoroutine(Fade(new Color(0, 0, 0, .8f), Color.clear, 0, false));
+		}
 	}
 }

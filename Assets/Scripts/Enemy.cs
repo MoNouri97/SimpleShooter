@@ -144,8 +144,9 @@ public class Enemy : LivingEntity
 		int hitsToKillPlayer,
 		float health,
 		Color color,
-		float reactionTime = .5f)
+		float reaction = .5f)
 	{
+		this.reactionTime = (reaction > .5f) ? .5f : reaction;
 		pathfinder.speed = speed;
 		if (hasTarget)
 		{
@@ -156,14 +157,9 @@ public class Enemy : LivingEntity
 		skinMat.color = color;
 		skinColor = color;
 	}
-	public override void takeHit(float damage, Vector3 hitPoint, Vector3 direction)
-	{
-		AudioManager.instance.PlaySound("Impact");
-		base.takeHit(damage, hitPoint, direction);
-	}
 
 
-	override protected void Die()
+	override protected void Die(bool permenant = true)
 	{
 		if (OnDeathStatic != null)
 		{
@@ -177,6 +173,7 @@ public class Enemy : LivingEntity
 
 	public override void takeDamage(float damage)
 	{
+		AudioManager.instance.PlaySound("Impact");
 		StartCoroutine(Stun());
 		base.takeDamage(damage);
 	}

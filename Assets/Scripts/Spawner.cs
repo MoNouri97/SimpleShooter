@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,12 +35,13 @@ public class Spawner : MonoBehaviour
 	private void Awake()
 	{
 		if (instance == null) instance = this;
+		playerEntity = FindObjectOfType<Player>();
 	}
 	private void Start()
 	{
-		playerEntity = FindObjectOfType<Player>();
 		playerT = playerEntity.transform;
 		playerEntity.OnDeath += OnPlayerDeath;
+		playerEntity.OnBirth += OnPlayerBirth;
 
 		NextCampCheckTime = campTime + Time.time;
 		campPosOld = playerT.position;
@@ -48,6 +50,8 @@ public class Spawner : MonoBehaviour
 		currentWave = -1;
 		NextWave();
 	}
+
+
 	private void Update()
 	{
 
@@ -87,6 +91,7 @@ public class Spawner : MonoBehaviour
 
 	void ResetPlayerPosition()
 	{
+		playerEntity.Resurrect();
 		playerT.position = map.PositonToTile(Vector3.zero).position + Vector3.up * 5;
 	}
 	IEnumerator SpawnEnemy()
@@ -120,7 +125,7 @@ public class Spawner : MonoBehaviour
 		}
 		mat.color = initColor;
 		Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
-		spawnedEnemy.setProperties(wave.moveSpeed, wave.hitsToKillPlayer, wave.health, wave.color);
+		spawnedEnemy.setProperties(wave.moveSpeed, wave.hitsToKillPlayer, wave.health, wave.color, wave.reactionTime);
 		spawnedEnemy.OnDeath += OnEnemyDeath;
 	}
 	void NextWave()
@@ -145,14 +150,19 @@ public class Spawner : MonoBehaviour
 		if (OnNewWave != null)
 		{
 			OnNewWave(currentWave);
-			ResetPlayerPosition();
 		}
+		ResetPlayerPosition();
 	}
 
 	void OnPlayerDeath()
 	{
 		isDisabled = true;
 	}
+	private void OnPlayerBirth()
+	{
+		isDisabled = false;
+	}
+
 	void OnEnemyDeath()
 	{
 		if (--enemiesAlive == 0)
@@ -163,7 +173,7 @@ public class Spawner : MonoBehaviour
 		else
 		{
 			// chance to spawn a pickup
-			bool rand = Random.Range(0f, 1f) < 0.2f;
+			bool rand = UnityEngine.Random.Range(0f, 1f) < 0.2f;
 			if (rand)
 			{
 				StartCoroutine(SpawnPickup(1, 10));
@@ -174,7 +184,7 @@ public class Spawner : MonoBehaviour
 	IEnumerator SpawnPickup(float spawnDelay = 1, float flashSpeed = 4)
 	{
 		Wave wave = waves[currentWave];
-		int random = Random.Range(0, pickUps.Length);
+		int random = UnityEngine.Random.Range(0, pickUps.Length);
 		PickUp pickup = pickUps[random];
 
 		//select tile
@@ -202,6 +212,16 @@ public class Spawner : MonoBehaviour
 	}
 
 
+	public void restartWave()
+	{
+		currentWave--;
+		StopCoroutine("SpawnEnemy");
+		foreach (Enemy e in FindObjectsOfType<Enemy>())
+		{
+			GameObject.Destroy(e.gameObject);
+		}
+		NextWave();
+	}
 	[System.Serializable]
 	public struct Wave
 	{
@@ -212,6 +232,7 @@ public class Spawner : MonoBehaviour
 		public int hitsToKillPlayer;
 		public float health;
 		public Color color;
+		public float reactionTime;
 	}
 
 }

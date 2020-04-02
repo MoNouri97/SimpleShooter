@@ -6,6 +6,7 @@ public class Grenade : MonoBehaviour
 {
 	public GameObject effect;
 	public float detonationTime;
+	public float damage = 3;
 	public float throwForce;
 	public float radius;
 	public float tickSpeed = 100;
@@ -30,7 +31,7 @@ public class Grenade : MonoBehaviour
 		float percent = 0;
 		while (true)
 		{
-			transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.1f, Mathf.PingPong(percent * speed, 1));
+			transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 2f, Mathf.PingPong(percent * speed, 1));
 			percent += Time.deltaTime;
 			yield return null;
 		}
@@ -40,12 +41,14 @@ public class Grenade : MonoBehaviour
 		yield return new WaitForSeconds(time);
 
 		RaycastHit[] hits = Physics.SphereCastAll(transform.position, radius, Vector3.forward, 0, layerMask, QueryTriggerInteraction.UseGlobal);
+		LivingEntity item;
 		foreach (RaycastHit i in hits)
 		{
-			LivingEntity item = i.collider.GetComponent<LivingEntity>();
+			item = null;
+			item = i.collider.GetComponent<LivingEntity>();
 
 			if (item == null) continue;
-			item.takeDamage(1);
+			item.takeDamage(damage);
 			damaged.Add(item);
 		}
 		Destroy(gameObject);

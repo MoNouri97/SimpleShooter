@@ -17,12 +17,16 @@ public class Score : MonoBehaviour
 	int streak;
 	bool onStreak;
 	float lastKillTime;
-	void Start()
+	private void Awake()
 	{
-		streak = 0;
-		Enemy.OnDeathStatic += OnEnemyKilled;
 		player = GetComponent<UI>().player;
 		player.OnDeath += OnPlayerDeath;
+		player.OnBirth += ResetScore;
+	}
+	void Start()
+	{
+		ResetScore();
+
 	}
 	private void Update()
 	{
@@ -38,8 +42,8 @@ public class Score : MonoBehaviour
 		if (onStreak)
 		{
 			streak++;
+			streakCount.text = "x" + streak;
 			streakCount.gameObject.SetActive(true);
-
 		}
 		else
 		{
@@ -48,7 +52,6 @@ public class Score : MonoBehaviour
 		}
 		lastKillTime = Time.time;
 
-		streakCount.text = "x" + streak;
 		score += 5 * streak;
 		scoreCount.text = (score).ToString("D6");
 	}
@@ -58,13 +61,13 @@ public class Score : MonoBehaviour
 		Enemy.OnDeathStatic -= OnEnemyKilled;
 	}
 
-	public void StartNewGame()
+	public void ResetScore()
 	{
-		SceneManager.LoadScene("Game");
-
+		lastKillTime = 0;
 		score = 0;
 		streak = 0;
 		scoreCount.text = (score).ToString("D6");
+		Enemy.OnDeathStatic += OnEnemyKilled;
 
 	}
 }

@@ -205,7 +205,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effect: {fileID: 6051029013361806419, guid: 45165f2d369ccebf1a8576c7581ed6b3, type: 3}
   detonationTime: 1
-  throwForce: 10
+  damage: 3
+  throwForce: 20
   radius: 4
   tickSpeed: 1
   layerMask:

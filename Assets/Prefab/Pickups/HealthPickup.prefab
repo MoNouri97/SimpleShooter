@@ -19,7 +19,7 @@ MonoBehaviour:
   rotateAxe: {x: 0, y: 1, z: 0}
   sprite: {fileID: 2800000, guid: 40bf6d6a68ecb92e3baf34f8888859ad, type: 3}
   render: {fileID: 5358408821478631999}
-  trailsColor: {r: 1, g: 0, b: 0, a: 1}
+  color: {r: 0.9150943, g: 0.09927912, b: 0.28917873, a: 1}
 --- !u!1001 &3526118821858134262
 PrefabInstance:
   m_ObjectHideFlags: 0
