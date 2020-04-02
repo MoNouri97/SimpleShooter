@@ -10,12 +10,11 @@ public class MusicManager : MonoBehaviour
 
 	void Start()
 	{
-		AudioManager.instance.PlayMusic(menuTheme, 2);
 		SceneManager.sceneLoaded += UpdateMusic;
-
+		UpdateMusic(SceneManager.GetActiveScene());
 	}
 
-	void UpdateMusic(Scene scene, LoadSceneMode mode)
+	void UpdateMusic(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
 	{
 		switch (scene.name)
 		{
