@@ -109,7 +109,8 @@ public class MapGenerator : MonoBehaviour
 				Vector3 position = CoordToPosition(randCoord.x, randCoord.y);
 				Transform obstacle = Instantiate(obstaclePrefab, position + (Vector3.up * obstacleHeight / 2f), Quaternion.identity) as Transform;
 				obstacle.parent = mapHolder;
-				obstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
+				// obstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
+				obstacle.localScale = new Vector3(tileSize, obstacleHeight, tileSize);
 
 				Renderer obstacleRenderer = obstacle.GetComponent<Renderer>();
 				Material obstacleMat = new Material(obstacleRenderer.sharedMaterial);
