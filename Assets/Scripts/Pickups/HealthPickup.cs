@@ -4,6 +4,6 @@ public class HealthPickup : PickUp
 {
 	override protected void Equip(Player player)
 	{
-		player.GainHealth(5);
+		player.GainHealth(.3f);
 	}
 }

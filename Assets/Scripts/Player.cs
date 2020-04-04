@@ -134,8 +134,9 @@ public class Player : LivingEntity
 
 	void OnNewWave(int wave) => health = startingHealth;
 
-	public void GainHealth(float val)
+	public void GainHealth(float percent)
 	{
+		float val = startingHealth * Mathf.Clamp(percent, 0, 1);
 		if (health + val > startingHealth)
 		{
 			health = startingHealth;
