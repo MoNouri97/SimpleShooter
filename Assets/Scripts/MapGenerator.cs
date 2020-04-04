@@ -287,6 +287,18 @@ public class MapGenerator : MonoBehaviour
 		public float maxObstacleHeight;
 		public Color bgColor;
 		public Color fgColor;
+
+		public Map(Vector2Int mapSize, float obstaclePercent, int seed, float minObstacleHeight, float maxObstacleHeight, Color bgColor, Color fgColor)
+		{
+			this.mapSize = new Coord(mapSize.x, mapSize.y);
+			this.obstaclePercent = obstaclePercent;
+			this.seed = seed;
+			this.minObstacleHeight = minObstacleHeight;
+			this.maxObstacleHeight = maxObstacleHeight;
+			this.bgColor = bgColor;
+			this.fgColor = fgColor;
+		}
+
 		public Coord center { get => new Coord(mapSize.x / 2, mapSize.y / 2); }
 	}
 }
