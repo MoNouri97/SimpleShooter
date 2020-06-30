@@ -5,7 +5,9 @@
 
 </div>
 
----
+[Gameplay Video](https://drive.google.com/file/d/1RMsHzGF680R4O-YkcKtfS106El_TK7wf/view?usp=sharing)
+
+![screenshot](Images/image.png 'main ui')
 
 <p align="center"> A simple top down shooter with level generation and power-ups
     <br> 
