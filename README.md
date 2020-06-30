@@ -64,7 +64,7 @@ this game was developed as a project to test my unity and c# knowledge (and game
 
 - [@Monouri97](https://github.com/monouri97) - coding and visuals
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/MoNouri97/SimpleShooter/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
